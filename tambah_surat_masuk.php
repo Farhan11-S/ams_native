@@ -4,146 +4,7 @@
         $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
         header("Location: ./");
         die();
-    } else {
-
-        if(isset($_REQUEST['submit'])){
-
-            //validasi form kosong
-            if($_REQUEST['no_agenda'] == "" || $_REQUEST['no_surat'] == "" || $_REQUEST['asal_surat'] == "" || $_REQUEST['isi'] == ""
-                || $_REQUEST['kode'] == "" || $_REQUEST['indeks'] == "" || $_REQUEST['tgl_surat'] == ""  || $_REQUEST['keterangan'] == ""){
-                $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
-                echo '<script language="javascript">window.history.back();</script>';
-            } else {
-
-                $no_agenda = $_REQUEST['no_agenda'];
-                $no_surat = $_REQUEST['no_surat'];
-                $asal_surat = $_REQUEST['asal_surat'];
-                $isi = $_REQUEST['isi'];
-                $kode = substr($_REQUEST['kode'],0,30);
-                $nkode = trim($kode);
-                $indeks = $_REQUEST['indeks'];
-                $tgl_surat = $_REQUEST['tgl_surat'];
-                $keterangan = $_REQUEST['keterangan'];
-                $id_user = $_SESSION['id_user'];
-
-                //validasi input data
-                if(!preg_match("/^[0-9]*$/", $no_agenda)){
-                    $_SESSION['no_agenda'] = 'Form Nomor Agenda harus diisi angka!';
-                    echo '<script language="javascript">window.history.back();</script>';
-                } else {
-
-                    if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $no_surat)){
-                        $_SESSION['no_surat'] = 'Form No Surat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), minus(-) dan garis miring(/)';
-                        echo '<script language="javascript">window.history.back();</script>';
-                    } else {
-
-                        if(!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $asal_surat)){
-                            $_SESSION['asal_surat'] = 'Form Asal Surat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
-                            echo '<script language="javascript">window.history.back();</script>';
-                        } else {
-
-                            if(!preg_match("/^[a-zA-Z0-9.,_()%&@\/\r\n -]*$/", $isi)){
-                                $_SESSION['isi'] = 'Form Isi Ringkas hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-), garis miring(/), kurung(), underscore(_), dan(&) persen(%) dan at(@)';
-                                echo '<script language="javascript">window.history.back();</script>';
-                            } else {
-
-                                if(!preg_match("/^[a-zA-Z0-9., ]*$/", $nkode)){
-                                    $_SESSION['kode'] = 'Form Kode Klasifikasi hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
-                                    echo '<script language="javascript">window.history.back();</script>';
-                                } else {
-
-                                    if(!preg_match("/^[a-zA-Z0-9., -]*$/", $indeks)){
-                                        $_SESSION['indeks'] = 'Form Indeks hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,) dan minus (-)';
-                                        echo '<script language="javascript">window.history.back();</script>';
-                                    } else {
-
-                                        if(!preg_match("/^[0-9.-]*$/", $tgl_surat)){
-                                            $_SESSION['tgl_surat'] = 'Form Tanggal Surat hanya boleh mengandung angka dan minus(-)';
-                                            echo '<script language="javascript">window.history.back();</script>';
-                                        } else {
-
-                                            if(!preg_match("/^[a-zA-Z0-9.,()\/ -]*$/", $keterangan)){
-                                                $_SESSION['keterangan'] = 'Form Keterangan hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-), garis miring(/), dan kurung()';
-                                                echo '<script language="javascript">window.history.back();</script>';
-                                            } else {
-
-                                                $cek = mysqli_query($config, "SELECT * FROM tbl_surat_masuk WHERE no_surat='$no_surat'");
-                                                $result = mysqli_num_rows($cek);
-
-                                                if($result > 0){
-                                                    $_SESSION['errDup'] = 'Nomor Surat sudah terpakai, gunakan yang lain!';
-                                                    echo '<script language="javascript">window.history.back();</script>';
-                                                } else {
-
-                                                    $ekstensi = array('jpg','png','jpeg','doc','docx','pdf');
-                                                    $file = $_FILES['file']['name'];
-                                                    $x = explode('.', $file);
-                                                    $eks = strtolower(end($x));
-                                                    $ukuran = $_FILES['file']['size'];
-                                                    $target_dir = "upload/surat_masuk/";
-
-                                                    if (! is_dir($target_dir)) {
-                                                        mkdir($target_dir, 0755, true);
-                                                    }
-
-                                                    //jika form file tidak kosong akan mengeksekusi script dibawah ini
-                                                    if($file != ""){
-
-                                                        $rand = rand(1,10000);
-                                                        $nfile = $rand."-".$file;
-
-                                                        //validasi file
-                                                        if(in_array($eks, $ekstensi) == true){
-                                                            if($ukuran < 2500000){
-
-                                                                move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
-
-                                                                $query = mysqli_query($config, "INSERT INTO tbl_surat_masuk(no_agenda,no_surat,asal_surat,isi,kode,indeks,tgl_surat,
-                                                                    tgl_diterima,file,keterangan,id_user)
-                                                                        VALUES('$no_agenda','$no_surat','$asal_surat','$isi','$nkode','$indeks','$tgl_surat',NOW(),'$nfile','$keterangan','$id_user')");
-
-                                                                if($query == true){
-                                                                    $_SESSION['succAdd'] = 'SUKSES! Data berhasil ditambahkan';
-                                                                    header("Location: ./admin.php?page=tsm");
-                                                                    die();
-                                                                } else {
-                                                                    $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query';
-                                                                    echo '<script language="javascript">window.history.back();</script>';
-                                                                }
-                                                            } else {
-                                                                $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
-                                                                echo '<script language="javascript">window.history.back();</script>';
-                                                            }
-                                                        } else {
-                                                            $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
-                                                            echo '<script language="javascript">window.history.back();</script>';
-                                                        }
-                                                    } else {
-
-                                                        //jika form file kosong akan mengeksekusi script dibawah ini
-                                                        $query = mysqli_query($config, "INSERT INTO tbl_surat_masuk(no_agenda,no_surat,asal_surat,isi,kode,indeks,tgl_surat, tgl_diterima,file,keterangan,id_user)
-                                                            VALUES('$no_agenda','$no_surat','$asal_surat','$isi','$nkode','$indeks','$tgl_surat',NOW(),'','$keterangan','$id_user')");
-
-                                                        if($query == true){
-                                                            $_SESSION['succAdd'] = 'SUKSES! Data berhasil ditambahkan';
-                                                            header("Location: ./admin.php?page=tsm");
-                                                            die();
-                                                        } else {
-                                                            $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query';
-                                                            echo '<script language="javascript">window.history.back();</script>';
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {?>
+    } else { echo json_encode($_SESSION)?>
 
             <!-- Row Start -->
             <div class="row">
@@ -194,128 +55,87 @@
             <div class="row jarak-form">
 
                 <!-- Form START -->
-                <form class="col s12" method="POST" action="?page=tsm&act=add" enctype="multipart/form-data">
+                <form id="main-form" class="col s12" method="POST" action="tambah_rapat_database.php" enctype="multipart/form-data">
 
                     <!-- Row in form START -->
                     <div class="row">
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">looks_one</i>
-                            <?php
-                            echo '<input id="no_agenda" type="number" class="validate" name="no_agenda" value="';
-                                $sql = mysqli_query($config, "SELECT no_agenda FROM tbl_surat_masuk");
-                                $no_agenda = "1";
-                                if (mysqli_num_rows($sql) == 0){
-                                    echo $no_agenda;
-                                }
-
-                                $result = mysqli_num_rows($sql);
-                                $counter = 0;
-                                while(list($no_agenda) = mysqli_fetch_array($sql)){
-                                    if (++$counter == $result) {
-                                        $no_agenda++;
-                                        echo $no_agenda;
+                            <input id="notulis" type="text" class="validate" name="notulis" required>
+                                <?php
+                                    if(isset($_SESSION['notulis'])){
+                                        $notulis = $_SESSION['notulis'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$notulis.'</div>';
+                                        unset($_SESSION['notulis']);
                                     }
-                                }
-                                echo '" required>';
-
-                                if(isset($_SESSION['no_agenda'])){
-                                    $no_agenda = $_SESSION['no_agenda'];
-                                    echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$no_agenda.'</div>';
-                                    unset($_SESSION['no_agenda']);
-                                }
-                            ?>
-                            <label for="no_agenda">Nomor Agenda</label>
+                                ?>
+                            <label for="notulis">Notulis Rapat</label>
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
-                            <input id="kode" type="text" class="validate" name="kode" required>
+                            <input id="nama" type="text" class="validate" name="nama" required>
                                 <?php
-                                    if(isset($_SESSION['kode'])){
-                                        $kode = $_SESSION['kode'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$kode.'</div>';
-                                        unset($_SESSION['kode']);
+                                    if(isset($_SESSION['nama_rapat'])){
+                                        $nama = $_SESSION['nama_rapat'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$nama.'</div>';
+                                        unset($_SESSION['nama_rapat']);
                                     }
                                 ?>
-                            <label for="kode">Kode Klasifikasi</label>
+                            <label for="nama">Nama Rapat</label>
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">place</i>
-                            <input id="asal_surat" type="text" class="validate" name="asal_surat" required>
+                            <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" required>
                                 <?php
-                                    if(isset($_SESSION['asal_surat'])){
-                                        $asal_surat = $_SESSION['asal_surat'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$asal_surat.'</div>';
-                                        unset($_SESSION['asal_surat']);
+                                    if(isset($_SESSION['nama_pimpinan'])){
+                                        $nama_pimpinan = $_SESSION['nama_pimpinan'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$nama_pimpinan.'</div>';
+                                        unset($_SESSION['nama_pimpinan']);
                                     }
                                 ?>
-                            <label for="asal_surat">Asal Surat</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">storage</i>
-                            <input id="indeks" type="text" class="validate" name="indeks" required>
-                                <?php
-                                    if(isset($_SESSION['indeks'])){
-                                        $indeks = $_SESSION['indeks'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$indeks.'</div>';
-                                        unset($_SESSION['indeks']);
-                                    }
-                                ?>
-                            <label for="indeks">Indeks Berkas</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">looks_two</i>
-                            <input id="no_surat" type="text" class="validate" name="no_surat" required>
-                                <?php
-                                    if(isset($_SESSION['no_surat'])){
-                                        $no_surat = $_SESSION['no_surat'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$no_surat.'</div>';
-                                        unset($_SESSION['no_surat']);
-                                    }
-                                    if(isset($_SESSION['errDup'])){
-                                        $errDup = $_SESSION['errDup'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$errDup.'</div>';
-                                        unset($_SESSION['errDup']);
-                                    }
-                                ?>
-                            <label for="no_surat">Nomor Surat</label>
+                            <label for="nama_pimpinan">Nama Pimpinan Rapat</label>
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="tgl_surat" type="text" name="tgl_surat" class="datepicker" required>
+                            <input id="tanggal" type="text" name="tanggal" class="datepicker" required>
                                 <?php
-                                    if(isset($_SESSION['tgl_surat'])){
-                                        $tgl_surat = $_SESSION['tgl_surat'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$tgl_surat.'</div>';
-                                        unset($_SESSION['tgl_surat']);
+                                    if(isset($_SESSION['tanggal'])){
+                                        $tanggal = $_SESSION['tanggal'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$tanggal.'</div>';
+                                        unset($_SESSION['tanggal']);
                                     }
                                 ?>
-                            <label for="tgl_surat">Tanggal Surat</label>
+                            <label for="tanggal">Tanggal Rapat</label>
                         </div>
                         <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">description</i>
-                            <textarea id="isi" class="materialize-textarea validate" name="isi" required></textarea>
+                            <i class="material-icons prefix md-prefix">storage</i>
+                            <textarea id="peserta" class="materialize-textarea validate" name="peserta" required></textarea>
                                 <?php
-                                    if(isset($_SESSION['isi'])){
-                                        $isi = $_SESSION['isi'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$isi.'</div>';
-                                        unset($_SESSION['isi']);
+                                    if(isset($_SESSION['peserta'])){
+                                        $peserta = $_SESSION['peserta'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$peserta.'</div>';
+                                        unset($_SESSION['peserta']);
                                     }
                                 ?>
-                            <label for="isi">Isi Ringkas</label>
+                            <label for="peserta">Peserta Rapat</label>
                         </div>
                         <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">featured_play_list</i>
-                            <input id="keterangan" type="text" class="validate" name="keterangan" required>
+                            <i class="material-icons prefix md-prefix">date_range</i>
+                            <input id="waktu" type="time" name="waktu" class="timepicker" required>
                                 <?php
-                                    if(isset($_SESSION['keterangan'])){
-                                        $keterangan = $_SESSION['keterangan'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$keterangan.'</div>';
-                                        unset($_SESSION['keterangan']);
+                                    if(isset($_SESSION['waktu'])){
+                                        $waktu = $_SESSION['waktu'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$waktu.'</div>';
+                                        unset($_SESSION['waktu']);
                                     }
                                 ?>
-                            <label for="keterangan">Keterangan</label>
+                            <label style="margin-top: 20px;" for="waktu">Waktu Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix md-prefix">looks_two</i>
+                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required></textarea>
+                        </div>
+                        <div class="input-field col s12">
                             <div class="file-field input-field">
                                 <div class="btn light-green darken-1">
                                     <span>File</span>
@@ -344,7 +164,7 @@
 
                     <div class="row">
                         <div class="col 6">
-                            <button type="submit" name="submit" class="btn-large blue waves-effect waves-light">SIMPAN <i class="material-icons">done</i></button>
+                            <button onclick="submitForm()" type="button"class="btn-large blue waves-effect waves-light" id="submit_button">SIMPAN <i class="material-icons">done</i></button>
                         </div>
                         <div class="col 6">
                             <a href="?page=tsm" class="btn-large deep-orange waves-effect waves-light">BATAL <i class="material-icons">clear</i></a>
@@ -353,11 +173,60 @@
 
                 </form>
                 <!-- Form END -->
-
             </div>
             <!-- Row form END -->
+            <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+            <script>
+                function submitForm() {
+                    const form = document.getElementById("main-form");
+                    const isian = tinyMCE.activeEditor.getContent();
+                    const parser = new DOMParser();
+                    const htmlDoc = parser.parseFromString(isian, "text/html");
+                    const isianImages = htmlDoc.getElementsByTagName("img");
+                    const imgSrcs = [];
 
+                    for (let i = 0; i < isianImages.length; i++) {
+                        imgSrcs.push(isianImages[i].getAttribute("src"));
+                    }
+                    const hiddenField = document.createElement("input");
+                    hiddenField.type = "hidden";
+                    hiddenField.name = "isianImages";
+                    hiddenField.value = JSON.stringify(imgSrcs);
+                    form.appendChild(hiddenField);
+                    form.submit()
+                }
+                var files = 
+                tinymce.init({
+                    selector: '#isian',
+                    plugins: 'image',
+                    height : '480px',
+                    images_reuse_filename :false,
+                    images_upload_handler: function (blobInfo, success, failure) {
+                        var xhr, formData;
+                        xhr = new XMLHttpRequest();
+                        xhr.withCredentials = false;
+                        xhr.open('POST', 'postAcceptor.php');
+                        xhr.onload = function() {
+                            var json;
+
+                            if (xhr.status != 200) {
+                                failure('HTTP Error: ' + xhr.status);
+                                return;
+                            }
+                            json = JSON.parse(xhr.responseText);
+
+                            if (!json || typeof json.location != 'string') {
+                                failure('Invalid JSON: ' + xhr.responseText);
+                                return;
+                            }
+                            success(json.location);
+                        };
+                        formData = new FormData();
+                        formData.append('file', blobInfo.blob(), blobInfo.filename());
+                        xhr.send(formData);
+                    },
+                });
+            </script>
 <?php
-        }
     }
 ?>

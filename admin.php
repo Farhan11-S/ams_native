@@ -48,8 +48,10 @@ Website     : https://masrud.com
     <div class="container">
 
     <?php
+        $home = true;
         if(isset($_REQUEST['page'])){
             $page = $_REQUEST['page'];
+            $home = false;
             switch ($page) {
                 case 'tsm':
                     include "transaksi_surat_masuk.php";
@@ -57,14 +59,8 @@ Website     : https://masrud.com
                 case 'ctk':
                     include "cetak_disposisi.php";
                     break;
-                case 'tsk':
-                    include "transaksi_surat_keluar.php";
-                    break;
                 case 'asm':
                     include "agenda_surat_masuk.php";
-                    break;
-                case 'ask':
-                    include "agenda_surat_keluar.php";
                     break;
                 case 'ref':
                     include "referensi.php";
@@ -78,11 +74,24 @@ Website     : https://masrud.com
                 case 'gsm':
                     include "galeri_sm.php";
                     break;
-                case 'gsk':
-                    include "galeri_sk.php";
+                default:
+                    $home = true;
                     break;
+                // case 'gsk':
+                //     include "galeri_sk.php";
+                //     break;
+                // case 'tsk':
+                //     include "transaksi_surat_keluar.php";
+                //     break;
+                // case 'ask':
+                //     include "agenda_surat_keluar.php";
+                //     break;
             }
         } else {
+            $home = true;
+        }
+
+        if($home) {
     ?>
         <!-- Row START -->
         <div class="row">
@@ -112,16 +121,10 @@ Website     : https://masrud.com
 
             <?php
                 //menghitung jumlah surat masuk
-                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_masuk"));
+                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_rapat"));
 
                 //menghitung jumlah surat masuk
                 $count2 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_keluar"));
-
-                //menghitung jumlah surat masuk
-                $count3 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_disposisi"));
-
-                //menghitung jumlah klasifikasi
-                $count4 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_klasifikasi"));
 
                 //menghitung jumlah pengguna
                 $count5 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_user"));
@@ -132,7 +135,7 @@ Website     : https://masrud.com
                 <div class="col s12 m4">
                     <div class="card cyan">
                         <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">mail</i> Jumlah Surat Masuk</span>
+                            <span class="card-title white-text"><i class="material-icons md-36">mail</i> Jumlah Notulen</span>
                             <?php echo '<h5 class="white-text link">'.$count1.' Surat Masuk</h5>'; ?>
                         </div>
                     </div>
@@ -143,28 +146,8 @@ Website     : https://masrud.com
                 <div class="col s12 m4">
                     <div class="card lime darken-1">
                         <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">drafts</i> Jumlah Surat Keluar</span>
+                            <span class="card-title white-text"><i class="material-icons md-36">drafts</i> Jumlah Pegawai</span>
                             <?php echo '<h5 class="white-text link">'.$count2.' Surat Keluar</h5>'; ?>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <div class="col s12 m4">
-                <div class="card yellow darken-3">
-                    <div class="card-content">
-                        <span class="card-title white-text"><i class="material-icons md-36">description</i> Jumlah Disposisi</span>
-                        <?php echo '<h5 class="white-text link">'.$count3.' Disposisi</h5>'; ?>
-                    </div>
-                </div>
-            </div>
-
-            <a href="?page=ref">
-                <div class="col s12 m4">
-                    <div class="card deep-orange">
-                        <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">class</i> Jumlah Klasifikasi Surat</span>
-                            <?php echo '<h5 class="white-text link">'.$count4.' Klasifikasi Surat</h5>'; ?>
                         </div>
                     </div>
                 </div>
