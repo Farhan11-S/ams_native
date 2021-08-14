@@ -4,7 +4,7 @@
         $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
         header("Location: ./");
         die();
-    } else { echo json_encode($_SESSION)?>
+    } else { ?>
 
             <!-- Row Start -->
             <div class="row">

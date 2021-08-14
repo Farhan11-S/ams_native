@@ -26,14 +26,6 @@
     	if(mysqli_num_rows($query) > 0){
             $no = 1;
             while($row = mysqli_fetch_array($query)){
-
-            if($_SESSION['id_user'] != $row['id_user'] AND $_SESSION['id_user'] != 1){
-                echo '<script language="javascript">
-                        window.alert("ERROR! Anda tidak memiliki hak akses untuk menghapus data ini");
-                        window.location.href="./admin.php?page=tsm";
-                      </script>';
-            } else {
-
     		  echo '
                 <!-- Row form Start -->
 				<div class="row jarak-card">
@@ -42,8 +34,8 @@
                         <div class="card-content">
 				        <table>
 				            <thead class="red lighten-5 red-text">
-				                <div class="confir red-text"><i class="material-icons md-36">error_outline</i>
-				                Apakah Anda yakin akan menghapus data ini?</div>
+				                <div class="confir primary-text"><i class="material-icons md-36">details</i>
+				                Detail Rapat</div>
 				            </thead>
 
 				            <tbody>
@@ -79,33 +71,10 @@
     			            </tbody>
     			   		</table>
                         </div>
-                        <div class="card-action">
-        	                <a href="?page=tsm&act=del&submit=yes&id='.$row['id'].'" class="btn-large deep-orange waves-effect waves-light white-text">HAPUS <i class="material-icons">delete</i></a>
-        	                <a href="?page=tsm" class="btn-large blue waves-effect waves-light white-text">BATAL <i class="material-icons">clear</i></a>
-    	                </div>
     	            </div>
                 </div>
             </div>
-            <!-- Row form END -->';
-
-            	if(isset($_REQUEST['submit'])){
-            		$id = $_REQUEST['id'];
-
-                    //jika tidak ada file akan mengekseskusi script dibawah ini
-                    $query = mysqli_query($config, "DELETE FROM tbl_rapat WHERE id='$id'");
-
-                    if($query){
-                        $_SESSION['succDel'] = 'SUKSES! Data berhasil dihapus<br/>';
-                        header("Location: ./admin.php?page=tsm");
-                        die();
-                    } else {
-                        $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query, ' . mysqli_error($config);
-                        echo '<script language="javascript">
-                                window.location.href="./admin.php?page=tsm&act=del&id='.$id.'";
-                              </script>';
-                    }
-                }
-    	    }
+            <!-- Row form END -->';   	    
         }
     }
 }

@@ -19,18 +19,18 @@
                     case 'add':
                         include "tambah_surat_masuk.php";
                         break;
-                    /* case 'edit':
+                    case 'edit':
                         include "edit_surat_masuk.php";
                         break;
-                    case 'disp':
-                        include "disposisi.php";
+                    case 'detail':
+                        include "detail_surat_masuk.php";
                         break;
-                    case 'print':
+                    /* case 'print':
                         include "cetak_disposisi.php";
-                        break;
+                        break; */
                     case 'del':
                         include "hapus_surat_masuk.php";
-                        break; */
+                        break; 
                     default:
                         $home = true;
                         break;
@@ -144,7 +144,8 @@
                             <thead class="blue lighten-4" id="head">
                                 <tr>
                                 <th width="10%">ID</th>
-                                <th width="30%">Nama Rapat<br/> File</th>
+                                <th width="10%">Notulis</th>
+                                <th width="30%">Nama Rapat</th>
                                 <th width="24%">Pimpinan Rapat</th>
                                 <th width="18%">Tanggal Rapat</th>
                                     <th width="18%">Tindakan <span class="right"><i class="material-icons" style="color: #333;">settings</i></span></th>
@@ -160,6 +161,7 @@
                                     echo '
                                     <tr>
                                     <td>'.$row['id'].'</td>
+                                    <td>'.$row['notulis'].'</td>
                                     <td>'. $row['nama'] .'</td>';
                                     echo '
                                     <td>'.$row['nama_pimpinan'].'</td>
@@ -167,16 +169,16 @@
                                     <td>';
 
                                     if($_SESSION['id_user'] != $row['id_user'] AND $_SESSION['id_user'] != 1){
-                                        echo '<a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id_surat='.$row['id'].'" target="_blank">
+                                        echo '<a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id='.$row['id'].'" target="_blank">
                                             <i class="material-icons">print</i> PRINT</a>';
                                     } else {
-                                        echo '<a class="btn small blue waves-effect waves-light" href="?page=tsm&act=edit&id_surat='.$row['id'].'">
+                                        echo '<a class="btn small blue waves-effect waves-light" href="?page=tsm&act=edit&id='.$row['id'].'">
                                                 <i class="material-icons">edit</i> EDIT</a>
-                                            <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page=tsm&act=disp&id_surat='.$row['id'].'">
+                                            <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page=tsm&act=detail&id='.$row['id'].'">
                                                 <i class="material-icons">description</i> DISP</a>
-                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id_surat='.$row['id'].'" target="_blank">
+                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id='.$row['id'].'" target="_blank">
                                                 <i class="material-icons">print</i> PRINT</a>
-                                            <a class="btn small deep-orange waves-effect waves-light" href="?page=tsm&act=del&id_surat='.$row['id'].'">
+                                            <a class="btn small deep-orange waves-effect waves-light" href="?page=tsm&act=del&id='.$row['id'].'">
                                                 <i class="material-icons">delete</i> DEL</a>';
                                     } echo '
                                         </td>
@@ -198,7 +200,8 @@
                                 <thead class="blue lighten-4" id="head">
                                     <tr>
                                         <th width="10%">ID</th>
-                                        <th width="30%">Nama Rapat<br/> File</th>
+                                        <th width="10%">notulis</th>
+                                        <th width="30%">Nama Rapat</th>
                                         <th width="24%">Pimpinan Rapat</th>
                                         <th width="18%">Tanggal Rapat</th>
                                         <th width="18%">Tindakan <span class="right tooltipped" data-position="left" data-tooltip="Atur jumlah data yang ditampilkan"><a class="modal-trigger" href="#modal"><i class="material-icons" style="color: #333;">settings</i></a></span></th>
@@ -259,6 +262,7 @@
                                       echo '
                                       <tr>
                                         <td>'.$row['id'].'</td>
+                                        <td>'.$row['notulis'].'</td>
                                         <td>'. $row['nama'] .'</td>';
                                         echo '
                                         <td>'.$row['nama_pimpinan'].'</td>
@@ -266,16 +270,16 @@
                                         <td>';
 
                                         if($_SESSION['id_user'] != $row['id_user'] AND $_SESSION['id_user'] != 1){
-                                            echo '<a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id_surat='.$row['id'].'" target="_blank">
+                                            echo '<a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id='.$row['id'].'" target="_blank">
                                                 <i class="material-icons">print</i> PRINT</a>';
                                         } else {
-                                          echo '<a class="btn small blue waves-effect waves-light" href="?page=tsm&act=edit&id_surat='.$row['id'].'">
+                                          echo '<a class="btn small blue waves-effect waves-light" href="?page=tsm&act=edit&id='.$row['id'].'">
                                                     <i class="material-icons">edit</i> EDIT</a>
-                                                <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page=tsm&act=disp&id_surat='.$row['id'].'">
+                                                <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page=tsm&act=detail&id='.$row['id'].'">
                                                     <i class="material-icons">description</i> DISP</a>
-                                                <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id_surat='.$row['id'].'" target="_blank">
+                                                <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id='.$row['id'].'" target="_blank">
                                                     <i class="material-icons">print</i> PRINT</a>
-                                                <a class="btn small deep-orange waves-effect waves-light" href="?page=tsm&act=del&id_surat='.$row['id'].'">
+                                                <a class="btn small deep-orange waves-effect waves-light" href="?page=tsm&act=del&id='.$row['id'].'">
                                                     <i class="material-icons">delete</i> DEL</a>';
                                         } echo '
                                         </td>
