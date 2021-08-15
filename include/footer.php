@@ -34,8 +34,14 @@
 <script type="text/javascript" src="asset/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="asset/js/jquery.autocomplete.min.js"></script>
 <script data-pace-options='{ "ajax": false }' src='asset/js/pace.min.js'></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+    
     //jquery dropdown
     $(".dropdown-button").dropdown({ hover: false });
 

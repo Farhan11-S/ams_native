@@ -28,9 +28,13 @@
 
     <!-- Global style START -->
     <link type="text/css" rel="stylesheet" href="asset/css/materialize.min.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <style type="text/css">
         body {
             background: #fff;
+        }
+        select{
+            display: block;
         }
         .bg::before {
             content: '';
