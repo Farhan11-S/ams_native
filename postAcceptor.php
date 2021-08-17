@@ -8,6 +8,9 @@
    * Change this line to set the upload folder *
    *********************************************/
   $imageFolder = "upload/rapat/";
+  if (! is_dir($imageFolder)) {
+    mkdir($imageFolder, 0755, true);
+  }
 
   if (isset($_SERVER['HTTP_ORIGIN'])) {
     // same-origin requests won't set an origin. If the origin is set, it must be valid.
