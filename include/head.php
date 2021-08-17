@@ -9,7 +9,7 @@
 
 <head>
 
-    <title>Aplikasi Manajemen Surat</title>
+    <title>Aplikasi Manajemen Notulen</title>
 
     <!-- Meta START -->
     <meta charset="utf-8" />
@@ -295,6 +295,10 @@
             }
             #tbl{
                 width: 600px!important;
+            }
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto !important;
             }
         }
     </style>

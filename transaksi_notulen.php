@@ -9,38 +9,25 @@
             $act = $_REQUEST['act'];
             switch ($act) {
                 case 'add':
-                    include "tambah_surat_masuk.php";
+                    include "tambah_notulen.php";
                     break;
                 case 'edit':
-                    include "edit_surat_masuk.php";
+                    include "edit_notulen.php";
                     break;
                 case 'show':
-                    include "detail_surat_masuk.php";
+                    include "detail_notulen.php";
                     break;
                 case 'print':
                     include "cetak_disposisi.php";
                     break;
                 case 'del':
-                    include "hapus_surat_masuk.php";
+                    include "hapus_notulen.php";
                     break; 
                 default:
                     $home = true;
                     break;
             }
-        } else {
-
-            $query = mysqli_query($config, "SELECT surat_masuk FROM tbl_sett");
-            list($surat_masuk) = mysqli_fetch_array($query);
-
-            //pagging
-            $limit = $surat_masuk;
-            $pg = @$_GET['pg'];
-            if(empty($pg)){
-                $curr = 0;
-                $pg = 1;
-            } else {
-                $curr = ($pg - 1) * $limit;
-            }?>
+        } else {?>
             <!-- Row Start -->
             <div class="row">
                 <!-- Secondary Nav START -->
@@ -105,7 +92,7 @@
                 }
             ?>
 
-                <div class="col s12">
+                <div class="col s12 table-responsive">
                     <table id="table_id" class="display blue lighten-4">
                         <thead>
                             <tr>
@@ -128,14 +115,14 @@
                                         echo '<td>'. $row['nama'] .'</td>';
                                         echo '<td>'. $row['nama_pimpinan'] .'</td>';
                                         echo '<td>'. $row['tanggal'] .'</td>';
-                                        echo '<td class="mdc-data-table__cell">
-                                        <a class="btn green waves-effect waves-light" title="Lihat detail" href="?page=tsm&amp;act=show&amp;id='. $row['id'] .'"><i class="material-icons">list</i></a>
+                                        echo '<td class="mdc-data-table__cell row">
+                                        <a class="btn green waves-effect waves-light col m5 s12" style="margin-right:5px;" title="Lihat detail" href="?page=tsm&amp;act=show&amp;id='. $row['id'] .'"><i class="material-icons">list</i></a>';
                         
-                                        <a class="btn blue waves-effect waves-light" title="Edit" href="?page=tsm&amp;act=edit&amp;id='. $row['id'] .'"><i class="material-icons">edit</i></a>
+                                        echo '<a class="btn blue waves-effect waves-light col m5 s12" title="Edit" href="?page=tsm&amp;act=edit&amp;id='. $row['id'] .'"><i class="material-icons">edit</i></a>';
                         
-                                        <a class="btn deep-orange waves-effect waves-light" title="Hapus" href="?page=tsm&amp;act=del&amp;id='. $row['id'] .'"><i class="material-icons">delete</i></a>
+                                        echo '<a class="btn deep-orange waves-effect waves-light col m5 s12" style="margin-right:5px;" title="Hapus" href="?page=tsm&amp;act=del&amp;id='. $row['id'] .'"><i class="material-icons">delete</i></a>';
                         
-                                        <a class="btn indigo lighten-1 waves-effect waves-light" title="Cetak disposisi" href="?page=tsm&amp;act=print&amp;id='. $row['id'] .'" target="_blank" rel="noopener"><i class="material-icons">print</i></a></td>';
+                                        echo '<a class="btn indigo lighten-1 waves-effect waves-light col m5 s12" title="Cetak" href="?page=tsm&amp;act=print&amp;id='. $row['id'] .'" target="_blank" rel="noopener"><i class="material-icons">print</i></a></td>';
                                         echo "</tr>";
                                     }
                                 }

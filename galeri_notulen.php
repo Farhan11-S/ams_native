@@ -8,17 +8,17 @@
     <!-- Row form Start -->
     <div class="row jarak-form black-text">
         <form class="col s12" method="post" action="">
-            <div class="input-field col s3">
+            <div class="input-field col s12 m6 l3">
                 <i class="material-icons prefix md-prefix">date_range</i>
                 <input id="dari_tanggal" type="text" name="dari_tanggal" id="dari_tanggal" required>
                 <label for="dari_tanggal">Dari Tanggal</label>
             </div>
-            <div class="input-field col s3">
+            <div class="input-field col s12 m6 l3">
                 <i class="material-icons prefix md-prefix">date_range</i>
                 <input id="sampai_tanggal" type="text" name="sampai_tanggal" id="sampai_tanggal" required>
                 <label for="sampai_tanggal">Sampai Tanggal</label>
             </div>
-            <div class="col s6">
+            <div class="col s12 m12 l6">
                 <button type="submit" name="submit" class="btn-large blue waves-effect waves-light">FILTER <i class="material-icons">filter_list</i></button>
             </div>
         </form>
@@ -41,33 +41,34 @@
         }
     }
 ?>
-<table id="table_id" class="display blue lighten-4">
-    <thead>
-        <tr>
-            <th width="5%">ID</th>
-            <th>Filename</th>
-            <th width="25%">Tanggal</th>
-            <th width="18%">Tindakan</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            $query = mysqli_query($config, $query);
-            if(mysqli_num_rows($query) > 0){
-                while($row = mysqli_fetch_array($query)){
-                    echo "<tr>";
-                    echo '<td>'. $row['id'] .'</td>';
-                    echo '<td>'. $row['filename'] .'</td>';
-                    echo '<td>'. $row['tanggal'] .'</td>';
-                    echo '<td class="mdc-data-table__cell">
-                    <a class="btn green waves-effect waves-light" title="Lihat detail" href="?page=tsm&amp;act=show&amp;id='. $row['rapat_id'] .'"><i class="material-icons">list</i></a></td>';
-                    echo "</tr>";
+<div class="col s12 table-responsive">
+    <table id="table_id" class="display blue lighten-4">
+        <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th>Filename</th>
+                <th width="25%">Tanggal</th>
+                <th width="18%">Tindakan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $query = mysqli_query($config, $query);
+                if(mysqli_num_rows($query) > 0){
+                    while($row = mysqli_fetch_array($query)){
+                        echo "<tr>";
+                        echo '<td>'. $row['id'] .'</td>';
+                        echo '<td>'. $row['filename'] .'</td>';
+                        echo '<td>'. $row['tanggal'] .'</td>';
+                        echo '<td class="mdc-data-table__cell">
+                        <a class="btn green waves-effect waves-light" title="Lihat detail" href="?page=tsm&amp;act=show&amp;id='. $row['rapat_id'] .'"><i class="material-icons">list</i></a></td>';
+                        echo "</tr>";
+                    }
                 }
-            }
-        ?>
-    </tbody>
-</table>
-
+            ?>
+        </tbody>
+    </table>
+</div>
 <style>
     #table_id_length{
         display: none;

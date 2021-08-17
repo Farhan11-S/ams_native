@@ -34,3 +34,11 @@
         die();
     }
 ?>
+
+<style>
+    @media only screen and (max-width: 992px) {
+        #header-instansi {
+            display: inherit !important;
+        }
+    }
+</style>

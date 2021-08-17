@@ -4,8 +4,18 @@
         $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
         header("Location: ./");
         die();
-    } else { ?>
+    } else { 
+            $id = mysqli_real_escape_string($config, $_REQUEST['id']);
+            $query = mysqli_query($config, "SELECT id, notulis, nama, nama_pimpinan, tanggal, peserta, waktu, isian, id_user FROM tbl_rapat WHERE id='$id'");
+            list($id, $notulis, $nama, $nama_pimpinan, $tanggal, $peserta, $waktu, $isian, $id_user) = mysqli_fetch_array($query);
+            $waktu = date("H:i", strtotime($waktu));
 
+            if($_SESSION['id_user'] != $id_user AND $_SESSION['id_user'] != 1){
+                echo '<script language="javascript">
+                        window.alert("ERROR! Anda tidak memiliki hak akses untuk mengedit data ini");
+                        window.location.href="./admin.php?page=tsk";
+                      </script>';
+            }?>
             <!-- Row Start -->
             <div class="row">
                 <!-- Secondary Nav START -->
@@ -55,13 +65,13 @@
             <div class="row jarak-form">
 
                 <!-- Form START -->
-                <form id="main-form" class="col s12" method="POST" action="tambah_rapat_database.php" enctype="multipart/form-data">
+                <form id="main-form" class="col s12" method="POST" action="edit_notulen_database.php" enctype="multipart/form-data">
 
                     <!-- Row in form START -->
                     <div class="row">
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">looks_one</i>
-                            <input id="notulis" type="text" class="validate" name="notulis" required>
+                            <input id="notulis" type="text" class="validate" name="notulis" value="<?php echo $notulis; ?>" required>
                                 <?php
                                     if(isset($_SESSION['notulis'])){
                                         $notulis = $_SESSION['notulis'];
@@ -73,7 +83,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
-                            <input id="nama" type="text" class="validate" name="nama" required>
+                            <input id="nama" type="text" class="validate" name="nama" value="<?php echo $nama; ?>" required>
                                 <?php
                                     if(isset($_SESSION['nama_rapat'])){
                                         $nama = $_SESSION['nama_rapat'];
@@ -84,8 +94,8 @@
                             <label for="nama">Nama Rapat</label>
                         </div>
                         <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">place</i>
-                            <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" required>
+                            <i class="material-icons prefix md-prefix">assignment_ind</i>
+                            <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" value="<?php echo $nama_pimpinan; ?>" required>
                                 <?php
                                     if(isset($_SESSION['nama_pimpinan'])){
                                         $nama_pimpinan = $_SESSION['nama_pimpinan'];
@@ -97,7 +107,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="tanggal" type="text" name="tanggal" class="datepicker" required>
+                            <input id="tanggal" type="text" name="tanggal" class="datepicker" value="<?php echo $tanggal; ?>" required>
                                 <?php
                                     if(isset($_SESSION['tanggal'])){
                                         $tanggal = $_SESSION['tanggal'];
@@ -108,8 +118,8 @@
                             <label for="tanggal">Tanggal Rapat</label>
                         </div>
                         <div class="input-field col s6">
-                            <i class="material-icons prefix md-prefix">storage</i>
-                            <textarea id="peserta" class="materialize-textarea validate" name="peserta" required></textarea>
+                            <i class="material-icons prefix md-prefix">assignment_ind</i>
+                            <textarea id="peserta" class="materialize-textarea validate" name="peserta" required><?php echo $peserta; ?></textarea>
                                 <?php
                                     if(isset($_SESSION['peserta'])){
                                         $peserta = $_SESSION['peserta'];
@@ -121,7 +131,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="waktu" type="time" name="waktu" class="timepicker" required>
+                            <input id="waktu" type="time" name="waktu" class="timepicker" value="<?php echo $waktu; ?>" required>
                                 <?php
                                     if(isset($_SESSION['waktu'])){
                                         $waktu = $_SESSION['waktu'];
@@ -133,7 +143,7 @@
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix md-prefix">looks_two</i>
-                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required></textarea>
+                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required><?php echo $isian; ?></textarea>
                         </div>
                         <div class="input-field col s12">
                             <div class="file-field input-field">
@@ -141,8 +151,14 @@
                                     <span>File</span>
                                     <input type="file" id="file" name="file">
                                 </div>
+                                <?php
+                                    $query = mysqli_query($config, "SELECT filename, path FROM tbl_files WHERE rapat_id='$id' AND isian=0");
+                                    if(mysqli_num_rows($query) > 0){
+                                        list($filename, $path) = mysqli_fetch_array($query);
+                                    }
+                                ?>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk" disabled>
+                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk" value="<?php echo isset($filename) ? $filename : ""; ?>" disabled>
                                         <?php
                                             if(isset($_SESSION['errSize'])){
                                                 $errSize = $_SESSION['errSize'];
@@ -188,11 +204,18 @@
                     for (let i = 0; i < isianImages.length; i++) {
                         imgSrcs.push(isianImages[i].getAttribute("src"));
                     }
-                    const hiddenField = document.createElement("input");
+                    let hiddenField = document.createElement("input");
                     hiddenField.type = "hidden";
                     hiddenField.name = "isianImages";
                     hiddenField.value = JSON.stringify(imgSrcs);
                     form.appendChild(hiddenField);
+
+                    hiddenField = document.createElement("input");
+                    hiddenField.type = "hidden";
+                    hiddenField.name = "id";
+                    hiddenField.value = <?php echo $id; ?>;
+                    form.appendChild(hiddenField);
+
                     form.submit()
                 }
                 var files = 

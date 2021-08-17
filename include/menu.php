@@ -51,13 +51,7 @@
                     if($_SESSION['admin'] == 1 || $_SESSION['admin'] == 3){ ?>
                 <ul class="collapsible collapsible-accordion">
                     <li>
-                        <a class="collapsible-header"><i class="material-icons">repeat</i> Transaksi Surat</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li><a href="?page=tsm">Surat Masuk</a></li>
-                                <!-- <li><a href="?page=tsk">Surat Keluar</a></li> -->
-                            </ul>
-                        </div>
+                        <a class="collapsible-header" href="?page=tsm"><i class="material-icons">mail</i>Notulen</a>
                    </li>
                 </ul>
                 <?php
@@ -67,30 +61,9 @@
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li>
-                        <a class="collapsible-header"><i class="material-icons">assignment</i> Buku Agenda</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li><a href="?page=asm">Surat Masuk</a></li>
-                                <!-- <li><a href="?page=ask">Surat Keluar</a></li> -->
-                            </ul>
-                        </div>
-                    </li>
+                        <a class="collapsible-header" a href="?page=gsm"><i class="material-icons">image</i> Galeri File</a>
                 </ul>
             </li>
-            <li class="no-padding">
-                <ul class="collapsible collapsible-accordion">
-                    <li>
-                        <a class="collapsible-header"><i class="material-icons">image</i> Galeri File</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li><a href="?page=gsm">Surat Masuk</a></li>
-                                <!-- <li><a href="?page=gsk">Surat Keluar</a></li> -->
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="?page=ref"><i class="material-icons middle">class</i> Referensi</a></li>
             <li class="no-padding">
             <?php
                 if($_SESSION['admin'] == 1){ ?>

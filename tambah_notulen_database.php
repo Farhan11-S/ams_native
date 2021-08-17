@@ -95,7 +95,7 @@ if(empty($_SESSION['admin'])){
                                             move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
 
                                             $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
-                                                    VALUES('$nfile','$target_dir',1,'$rapat_id')");
+                                                    VALUES('$nfile','$target_dir',0,'$rapat_id')");
 
                                             queryChecker($query, $config);
                                         } else {

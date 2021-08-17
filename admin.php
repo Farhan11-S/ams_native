@@ -54,16 +54,7 @@ Website     : https://masrud.com
             $home = false;
             switch ($page) {
                 case 'tsm':
-                    include "transaksi_surat_masuk.php";
-                    break;
-                case 'ctk':
-                    include "cetak_disposisi.php";
-                    break;
-                case 'asm':
-                    include "agenda_surat_masuk.php";
-                    break;
-                case 'ref':
-                    include "referensi.php";
+                    include "transaksi_notulen.php";
                     break;
                 case 'sett':
                     include "pengaturan.php";
@@ -72,20 +63,11 @@ Website     : https://masrud.com
                     include "profil.php";
                     break;
                 case 'gsm':
-                    include "galeri_rapat.php";
+                    include "galeri_notulen.php";
                     break;
                 default:
                     $home = true;
                     break;
-                // case 'gsk':
-                //     include "galeri_sk.php";
-                //     break;
-                // case 'tsk':
-                //     include "transaksi_surat_keluar.php";
-                //     break;
-                // case 'ask':
-                //     include "agenda_surat_keluar.php";
-                //     break;
             }
         } else {
             $home = true;
@@ -122,6 +104,7 @@ Website     : https://masrud.com
             <?php
                 //menghitung jumlah surat masuk
                 $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_rapat"));
+                $count2 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_files"));
 
                 //menghitung jumlah pengguna
                 $count5 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_user"));
@@ -129,11 +112,22 @@ Website     : https://masrud.com
 
             <!-- Info Statistic START -->
             <a href="?page=tsm">
-                <div class="col s12 m4">
+                <div class="col s12 <?php echo $_SESSION['id_user'] == 1 || $_SESSION['admin'] == 2 ? "m4" : "m6"; ?>">
                     <div class="card cyan">
                         <div class="card-content">
                             <span class="card-title white-text"><i class="material-icons md-36">mail</i> Jumlah Notulen</span>
                             <?php echo '<h5 class="white-text link">'.$count1.' Surat Masuk</h5>'; ?>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="?page=gsm">
+                <div class="col s12 <?php echo $_SESSION['id_user'] == 1 || $_SESSION['admin'] == 2 ? "m4" : "m6"; ?>">
+                    <div class="card blue darken-3">
+                        <div class="card-content">
+                            <span class="card-title white-text"><i class="material-icons md-36">attach_file</i> Jumlah Files</span>
+                            <?php echo '<h5 class="white-text link">'.$count2.' Surat Masuk</h5>'; ?>
                         </div>
                     </div>
                 </div>
