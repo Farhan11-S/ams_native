@@ -18,7 +18,7 @@
                     include "detail_notulen.php";
                     break;
                 case 'print':
-                    include "cetak_disposisi.php";
+                    include "print.php";
                     break;
                 case 'del':
                     include "hapus_notulen.php";

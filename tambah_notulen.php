@@ -59,7 +59,7 @@
 
                     <!-- Row in form START -->
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">looks_one</i>
                             <input id="notulis" type="text" class="validate" name="notulis" required>
                                 <?php
@@ -71,7 +71,7 @@
                                 ?>
                             <label for="notulis">Notulis</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
                             <input id="nama" type="text" class="validate" name="nama" required>
                                 <?php
@@ -83,7 +83,7 @@
                                 ?>
                             <label for="nama">Nama Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
                             <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" required>
                                 <?php
@@ -95,7 +95,7 @@
                                 ?>
                             <label for="nama_pimpinan">Nama Pimpinan Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">date_range</i>
                             <input id="tanggal" type="text" name="tanggal" class="datepicker" required>
                                 <?php
@@ -107,7 +107,7 @@
                                 ?>
                             <label for="tanggal">Tanggal Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
                             <textarea id="peserta" class="materialize-textarea validate" name="peserta" required></textarea>
                                 <?php
@@ -119,7 +119,7 @@
                                 ?>
                             <label for="peserta">Peserta Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">date_range</i>
                             <input id="waktu" type="time" name="waktu" class="timepicker" required>
                                 <?php
@@ -131,7 +131,7 @@
                                 ?>
                             <label style="margin-top: 20px;" for="waktu">Waktu Rapat</label>
                         </div>
-                        <div class="input-field col s12">
+                        <div class="input-field col s12" style="margin-top: 50px !important;">
                             <i class="material-icons prefix md-prefix">looks_two</i>
                             <textarea id="isian" name="isian" placeholder="Isian Rapat" required></textarea>
                         </div>

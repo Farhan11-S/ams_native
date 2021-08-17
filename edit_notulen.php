@@ -23,7 +23,7 @@
                     <nav class="secondary-nav">
                         <div class="nav-wrapper blue-grey darken-1">
                             <ul class="left">
-                                <li class="waves-effect waves-light"><a href="?page=tsm&act=add" class="judul"><i class="material-icons">mail</i> Tambah Data Surat Masuk</a></li>
+                                <li class="waves-effect waves-light"><a href="?page=tsm&act=add" class="judul"><i class="material-icons">mail</i> Edit Data Notulen</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -69,7 +69,7 @@
 
                     <!-- Row in form START -->
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">looks_one</i>
                             <input id="notulis" type="text" class="validate" name="notulis" value="<?php echo $notulis; ?>" required>
                                 <?php
@@ -81,7 +81,7 @@
                                 ?>
                             <label for="notulis">Notulis Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
                             <input id="nama" type="text" class="validate" name="nama" value="<?php echo $nama; ?>" required>
                                 <?php
@@ -93,7 +93,7 @@
                                 ?>
                             <label for="nama">Nama Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
                             <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" value="<?php echo $nama_pimpinan; ?>" required>
                                 <?php
@@ -105,7 +105,7 @@
                                 ?>
                             <label for="nama_pimpinan">Nama Pimpinan Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">date_range</i>
                             <input id="tanggal" type="text" name="tanggal" class="datepicker" value="<?php echo $tanggal; ?>" required>
                                 <?php
@@ -117,7 +117,7 @@
                                 ?>
                             <label for="tanggal">Tanggal Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
                             <textarea id="peserta" class="materialize-textarea validate" name="peserta" required><?php echo $peserta; ?></textarea>
                                 <?php
@@ -129,7 +129,7 @@
                                 ?>
                             <label for="peserta">Peserta Rapat</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">date_range</i>
                             <input id="waktu" type="time" name="waktu" class="timepicker" value="<?php echo $waktu; ?>" required>
                                 <?php
