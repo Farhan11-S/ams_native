@@ -194,7 +194,7 @@ Website     : https://masrud.com
                     <!-- Logo and title START -->
                     <div class="col s12">
                         <div class="card-content">
-                            <h5 class="center" id="title">Aplikasi Manajemen Surat</h5>
+                            <h5 class="center" id="title">Aplikasi Manajemen Notulen</h5>
                             <?php echo '<img id="logo" src="upload/'.$data['logo'].'">';?>
                             <h4 class="center" id="smk">
                             <?php echo ''.$data['nama'].'';?>

@@ -71,7 +71,7 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">looks_one</i>
-                            <input id="notulis" type="text" class="validate" name="notulis" value="<?php echo $notulis ;?>" required>
+                            <input id="notulis" type="text" class="validate" name="notulis" value="<?php echo $notulis; ?>" required>
                                 <?php
                                     if(isset($_SESSION['notulis'])){
                                         $notulis = $_SESSION['notulis'];
@@ -83,7 +83,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
-                            <input id="nama" type="text" class="validate" name="nama" value="<?php echo $nama ;?>" required>
+                            <input id="nama" type="text" class="validate" name="nama" value="<?php echo $nama; ?>" required>
                                 <?php
                                     if(isset($_SESSION['nama_rapat'])){
                                         $nama = $_SESSION['nama_rapat'];
@@ -95,7 +95,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">place</i>
-                            <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" value="<?php echo $nama_pimpinan ;?>" required>
+                            <input id="nama_pimpinan" type="text" class="validate" name="nama_pimpinan" value="<?php echo $nama_pimpinan; ?>" required>
                                 <?php
                                     if(isset($_SESSION['nama_pimpinan'])){
                                         $nama_pimpinan = $_SESSION['nama_pimpinan'];
@@ -107,7 +107,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="tanggal" type="text" name="tanggal" class="datepicker" value="<?php echo $tanggal ;?>" required>
+                            <input id="tanggal" type="text" name="tanggal" class="datepicker" value="<?php echo $tanggal; ?>" required>
                                 <?php
                                     if(isset($_SESSION['tanggal'])){
                                         $tanggal = $_SESSION['tanggal'];
@@ -119,7 +119,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">storage</i>
-                            <textarea id="peserta" class="materialize-textarea validate" name="peserta" required><?php echo $peserta ;?></textarea>
+                            <textarea id="peserta" class="materialize-textarea validate" name="peserta" required><?php echo $peserta; ?></textarea>
                                 <?php
                                     if(isset($_SESSION['peserta'])){
                                         $peserta = $_SESSION['peserta'];
@@ -131,7 +131,7 @@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="waktu" type="time" name="waktu" class="timepicker" value="<?php echo $waktu ;?>" required>
+                            <input id="waktu" type="time" name="waktu" class="timepicker" value="<?php echo $waktu; ?>" required>
                                 <?php
                                     if(isset($_SESSION['waktu'])){
                                         $waktu = $_SESSION['waktu'];
@@ -143,7 +143,7 @@
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix md-prefix">looks_two</i>
-                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required><?php echo $isian ;?></textarea>
+                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required><?php echo $isian; ?></textarea>
                         </div>
                         <div class="input-field col s12">
                             <div class="file-field input-field">
@@ -151,8 +151,14 @@
                                     <span>File</span>
                                     <input type="file" id="file" name="file">
                                 </div>
+                                <?php
+                                    $query = mysqli_query($config, "SELECT filename, path FROM tbl_files WHERE rapat_id='$id' AND isian=0");
+                                    if(mysqli_num_rows($query) > 0){
+                                        list($filename, $path) = mysqli_fetch_array($query);
+                                    }
+                                ?>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk">
+                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk" value="<?php echo isset($filename) ? $filename : ""; ?>">
                                         <?php
                                             if(isset($_SESSION['errSize'])){
                                                 $errSize = $_SESSION['errSize'];

@@ -76,9 +76,9 @@ if(empty($_SESSION['admin'])){
                                     $isian_images = $_REQUEST['isianImages'];
                                     $isian_images = json_decode($isian_images);
                                     for ($i=0; $i < count($isian_images); $i++) { 
-                                        $filename = str_replace($target_dir, "", $isian_images[0]);
-                                        $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,rapat_id)
-                                                VALUES('$filename','$target_dir','$rapat_id')");
+                                        $filename = str_replace($target_dir, "", $isian_images[$i]);
+                                        $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
+                                                VALUES('$filename','$target_dir',1,'$rapat_id')");
 
                                         queryChecker($query, $config);
                                     }
@@ -94,8 +94,8 @@ if(empty($_SESSION['admin'])){
 
                                             move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
 
-                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,rapat_id)
-                                                    VALUES('$nfile','$target_dir','$rapat_id')");
+                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
+                                                    VALUES('$nfile','$target_dir',1,'$rapat_id')");
 
                                             queryChecker($query, $config);
                                         } else {

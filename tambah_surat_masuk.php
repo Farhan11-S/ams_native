@@ -142,7 +142,7 @@
                                     <input type="file" id="file" name="file">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk">
+                                    <input class="file-path validate" type="text" placeholder="Upload file/scan gambar surat masuk" disabled>
                                         <?php
                                             if(isset($_SESSION['errSize'])){
                                                 $errSize = $_SESSION['errSize'];

@@ -24,7 +24,6 @@
     	$query = mysqli_query($config, "SELECT * FROM tbl_rapat WHERE id='$id'");
 
     	if(mysqli_num_rows($query) > 0){
-            $no = 1;
             while($row = mysqli_fetch_array($query)){
     		  echo '
                 <!-- Row form Start -->
@@ -67,6 +66,11 @@
                                     <td width="13%">Waktu</td>
                                     <td width="1%">:</td>
                                     <td width="86%">'.$row['waktu'].'</td>
+                                </tr>
+                                <tr>
+                                    <td width="13%">Isian</td>
+                                    <td width="1%">:</td>
+                                    <td width="86%">'.$row['isian'].'</td>
                                 </tr>
     			            </tbody>
     			   		</table>

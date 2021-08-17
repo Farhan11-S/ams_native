@@ -72,7 +72,7 @@ Website     : https://masrud.com
                     include "profil.php";
                     break;
                 case 'gsm':
-                    include "galeri_sm.php";
+                    include "galeri_rapat.php";
                     break;
                 default:
                     $home = true;
@@ -123,9 +123,6 @@ Website     : https://masrud.com
                 //menghitung jumlah surat masuk
                 $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_rapat"));
 
-                //menghitung jumlah surat masuk
-                $count2 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_keluar"));
-
                 //menghitung jumlah pengguna
                 $count5 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_user"));
             ?>
@@ -137,17 +134,6 @@ Website     : https://masrud.com
                         <div class="card-content">
                             <span class="card-title white-text"><i class="material-icons md-36">mail</i> Jumlah Notulen</span>
                             <?php echo '<h5 class="white-text link">'.$count1.' Surat Masuk</h5>'; ?>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="?page=tsk">
-                <div class="col s12 m4">
-                    <div class="card lime darken-1">
-                        <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">drafts</i> Jumlah Pegawai</span>
-                            <?php echo '<h5 class="white-text link">'.$count2.' Surat Keluar</h5>'; ?>
                         </div>
                     </div>
                 </div>

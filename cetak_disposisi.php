@@ -172,15 +172,14 @@
                         echo '<img class="logodisp" src="./upload/'.$logo.'"/>';
                         echo '<h6 class="up">'.$institusi.'</h6>';
                         echo '<h5 class="up" id="nama">'.$nama.'</h5><br/>';
-                        echo '<h6 class="status">'.$status.'</h6>';
                         echo '<span id="alamat">'.$alamat.'</span>';
 
                     echo '
                 </div>
                 <div class="separator"></div>';
 
-                $id_surat = mysqli_real_escape_string($config, $_REQUEST['id_surat']);
-                $query = mysqli_query($config, "SELECT * FROM tbl_surat_masuk WHERE id_surat='$id_surat'");
+                $id = mysqli_real_escape_string($config, $_REQUEST['id']);
+                $query = mysqli_query($config, "SELECT * FROM tbl_rapat WHERE id='$id'");
 
                 if(mysqli_num_rows($query) > 0){
                 $no = 0;
@@ -190,64 +189,43 @@
                     <table class="bordered" id="tbl">
                         <tbody>
                             <tr>
-                                <td class="tgh" id="lbr" colspan="5">LEMBAR DISPOSISI</td>
+                                <td class="tgh" id="lbr" colspan="5">LEMBAR NOTULEN</td>
                             </tr>
                             <tr>
-                                <td id="right" width="18%"><strong>Indeks Berkas</strong></td>
-                                <td id="left" style="border-right: none;" width="57%">: '.$row['indeks'].'</td>
-                                <td id="left" width="25"><strong>Kode</strong> : '.$row['kode'].'</td>
+                                <td id="right" width="18%"><strong>Rapat</strong></td>
+                                <td id="left" style="border-right: none;" width="57%">: '.$row['nama'].'</td>
+                                <td id="left" width="25"><strong>Notulis</strong> : '.$row['notulis'].'</td>
                             </tr>
-                            <tr><td id="right"><strong>Tanggal Surat</strong></td>
-                                <td id="left" colspan="2">: '.indoDate($row['tgl_surat']).'</td>
-                            </tr>
-                            <tr>
-                                <td id="right"><strong>Nomor Surat</strong></td>
-                                <td id="left" colspan="2">: '.$row['no_surat'].'</td>
+                            <tr><td id="right"><strong>Tanggal Rapat</strong></td>
+                                <td id="left" colspan="2">: '.indoDate($row['tanggal']).'</td>
                             </tr>
                             <tr>
-                                <td id="right"><strong>Asal Surat</strong></td>
-                                <td id="left" colspan="2">: '.$row['asal_surat'].'</td>
+                                <td id="right"><strong>Waktu Rapat</strong></td>
+                                <td id="left" colspan="2">: '.$row['waktu'].'</td>
                             </tr>
                             <tr>
-                                <td id="right"><strong>Isi Ringkas</strong></td>
-                                <td id="left" colspan="2">: '.$row['isi'].'</td>
+                                <td id="right"><strong>Nama Pimpinan</strong></td>
+                                <td id="left" colspan="2">: '.$row['nama_pimpinan'].'</td>
                             </tr>
                             <tr>
-                                <td id="right"><strong>Diterima Tanggal</strong></td>
-                                <td id="left" style="border-right: none;">: '.indoDate($row['tgl_diterima']).'</td>
-                                <td id="left"><strong>No. Agenda</strong> : '.$row['no_agenda'].'</td>
+                                <td id="right"><strong>Peserta</strong></td>
+                                <td id="left" colspan="2">: '.$row['peserta'].'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong>Dibuat Tanggal</strong></td>
+                                <td id="left" style="border-right: none;">: '.indoDate($row['CREATED_AT']).'</td>
                             </tr>
                             <tr>
                                 <td id="right"><strong>Tanggal Penyelesaian</strong></td>
                                 <td id="left" colspan="2">: </td>
                             </tr>
                             <tr>';
-                            $query3 = mysqli_query($config, "SELECT * FROM tbl_disposisi JOIN tbl_surat_masuk ON tbl_disposisi.id_surat = tbl_surat_masuk.id_surat WHERE tbl_disposisi.id_surat='$id_surat'");
-
-                            if(mysqli_num_rows($query3) > 0){
-                                $no = 0;
-                                $row = mysqli_fetch_array($query3);{
-                                echo '
-                            <tr class="isi">
-                                <td colspan="2">
-                                    <strong>Isi Disposisi :</strong><br/>'.$row['isi_disposisi'].'
-                                    <div style="height: 50px;"></div>
-                                    <strong>Batas Waktu</strong> : '.indoDate($row['batas_waktu']).'<br/>
-                                    <strong>Sifat</strong> : '.$row['sifat'].'<br/>
-                                    <strong>Catatan</strong> :<br/> '.$row['catatan'].'
-                                    <div style="height: 25px;"></div>
-                                </td>
-                                <td><strong>Diteruskan Kepada</strong> : <br/>'.$row['tujuan'].'</td>
-                            </tr>';
-                                }
-                            } else {
-                                echo '
+                            echo '
                                 <tr class="isi">
-                                    <td colspan="2"><strong>Isi Disposisi :</strong>
+                                    <td colspan="2"><strong>Isian : '.$row['peserta'].'</strong>
                                     </td>
                                     <td><strong>Diteruskan Kepada</strong> : </td>
                                 </tr>';
-                            }
                         } echo '
                 </tbody>
             </table>

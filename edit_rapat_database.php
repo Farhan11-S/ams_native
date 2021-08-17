@@ -71,49 +71,63 @@ if(empty($_SESSION['admin'])){
                                 
                                 queryChecker($query, $config);
 
-                                // if(!empty($_REQUEST['isianImages'])){
-                                //     $query = "SELECT * FROM tbl_files WHERE id = '$id'";
-                                //     $images_in_db = [];
-                                //     while ($row = mysqli_fetch_array($query)) {
-                                //         $fullpath = $row['path'].$row['filename'];
-                                //         array_push($images_in_db, $fullpath);
-                                //     }
-                                //     $isian_images = $_REQUEST['isianImages'];
-                                //     $isian_images = json_decode($isian_images);
-                                //     for ($i=0; $i < count($isian_images); $i++) { 
-                                //         if(!in_array($isian_images[0], $images_in_db)){
-                                //             $filename = str_replace($target_dir, "", $isian_images[0]);
-                                //             $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,rapat_id)
-                                //                     VALUES('$filename','$target_dir','$rapat_id')");
+                                if(!empty($_REQUEST['isianImages'])){
+                                    $query = mysqli_query($config, "SELECT * FROM tbl_files WHERE rapat_id = '$id' AND isian = 1");
+                                    queryChecker($query, $config);
+                                    $images_in_db = [];
+                                    $images_in_isian_from_db = [];
+                                    while ($row = mysqli_fetch_array($query)) {
+                                        $fullpath = $row['path'].$row['filename'];
+                                        array_push($images_in_db, $fullpath);
+                                    }
+                                    $isian_images = $_REQUEST['isianImages'];
+                                    $isian_images = json_decode($isian_images);
+                                    for ($i=0; $i < count($isian_images); $i++) { 
+                                        if(!in_array($isian_images[$i], $images_in_db)){                    
+                                            $filename = str_replace($target_dir, "", $isian_images[$i]);
+                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
+                                                    VALUES('$filename','$target_dir',1,'$id')");
 
-                                //             queryChecker($query, $config);
-                                //         }
-                                //     }
-                                // }    
+                                            queryChecker($query, $config);
+                                        } else{
+                                            array_push($images_in_isian_from_db, $isian_images[$i]);
+                                        }
+                                    }
+                                    $images_deleted = array_diff($images_in_db, $images_in_isian_from_db);
+                                    for ($i=0; $i < count($images_deleted); $i++) { 
+                                        $filename = str_replace($target_dir, "", $images_deleted[$i]);
+                                        $query = mysqli_query($config, "DELETE FROM tbl_files WHERE rapat_id='$id' AND isian=1 AND filename='$filename'");
+                                        queryChecker($query, $config);
+                                    }
+                                }    
 
-                                // //jika form file tidak kosong akan mengeksekusi script dibawah ini
-                                // if($file != ""){
-                                //     $rand = rand(1,10000);
-                                //     $nfile = $rand."-".$file;
-                                //     //validasi file
-                                //     if(in_array($eks, $ekstensi) == true){
-                                //         if($ukuran < 2500000){
+                                //jika form file tidak kosong akan mengeksekusi script dibawah ini
+                                if($file != ""){
+                                    $rand = rand(1,10000);
+                                    $nfile = $rand."-".$file;
+                                    //validasi file
+                                    if(in_array($eks, $ekstensi) == true){
+                                        if($ukuran < 2500000){
 
-                                //             move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
+                                            $query = mysqli_query($config, "DELETE FROM tbl_files WHERE rapat_id='$id' AND isian=0");
 
-                                //             $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,rapat_id)
-                                //                     VALUES('$nfile','$target_dir','$rapat_id')");
+                                            queryChecker($query, $config);
 
-                                //             queryChecker($query, $config);
-                                //         } else {
-                                //             $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
-                                //             echo '<script language="javascript">window.history.back();</script>';
-                                //         }
-                                //     } else {
-                                //         $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
-                                //         echo '<script language="javascript">window.history.back();</script>';
-                                //     }
-                                // }
+                                            move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
+
+                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path, isian, rapat_id)
+                                                    VALUES('$nfile','$target_dir', 0, '$id')");
+
+                                            queryChecker($query, $config);
+                                        } else {
+                                            $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
+                                            echo '<script language="javascript">window.history.back();</script>';
+                                        }
+                                    } else {
+                                        $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
+                                        echo '<script language="javascript">window.history.back();</script>';
+                                    }
+                                }
                                 $_SESSION['succAdd'] = 'SUKSES! Data berhasil diedit';
                                 header("Location: ./admin.php?page=tsm");
                             }
