@@ -2,7 +2,7 @@
 ob_start();
 //cek session
 session_start();
-if(empty($_SESSION['admin'])){
+if(empty($_SESSION['admin']) || $_SESSION['admin'] == 3){
     $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
     header("Location: ./");
     die();
@@ -11,27 +11,39 @@ if(empty($_SESSION['admin'])){
     require_once 'include/functions.php';
     $config = conn($host, $username, $password, $database);
     //validasi form kosong
-    if($_REQUEST['notulis'] == "" || $_REQUEST['nama'] == "" || $_REQUEST['tanggal'] == ""
-    || $_REQUEST['waktu'] == "" || $_REQUEST['nama_pimpinan'] == "" || $_REQUEST['peserta'] == "" || $_REQUEST['isian'] == ""){
+    if($_REQUEST['tema'] == "" || $_REQUEST['tanggal'] == "" || $_REQUEST['mulai'] == "" || $_REQUEST['selesai'] == ""
+    || $_REQUEST['tempat'] == "" || $_REQUEST['nama_pimpinan'] == "" || $_REQUEST['peserta'] == ""){
         $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
         echo '<script language="javascript">window.history.back();</script>';
     } else {
-        $notulis = $_REQUEST['notulis'];
-        $nama = $_REQUEST['nama'];
+        $tema = $_REQUEST['tema'];
         $tanggal = $_REQUEST['tanggal'];
-        $waktu = $_REQUEST['waktu'];
+        $mulai = $_REQUEST['mulai'];
+        $selesai = $_REQUEST['selesai'];
+        $tempat = $_REQUEST['tempat'];
         $nama_pimpinan = $_REQUEST['nama_pimpinan'];
         $peserta = $_REQUEST['peserta'];
-        $isian = $_REQUEST['isian'];
+        $sia = $_REQUEST['sia'];
+        $ssa = $_REQUEST['ssa'];
+        $liw1 = $_REQUEST['liw1'];
+        $liw2 = $_REQUEST['liw2'];
+        $liw3 = $_REQUEST['liw3'];
+        $liw4 = $_REQUEST['liw4'];
+        $kpk = $_REQUEST['kpk'];
+        $kep = $_REQUEST['kep'];
+        $kup = $_REQUEST['kup'];
+        $tl = $_REQUEST['tl'];
+        $penutup = $_REQUEST['penutup'];
+        $username = $_SESSION['nama'];
         $id_user = $_SESSION['id_user'];
 
         //validasi input data
-        if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $notulis)){
+        if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $tempat)){
             $_SESSION['notulis'] = 'Form Notulis hanya boleh mengandung karakter huruf, angka, spasi, titik(.), minus(-) dan garis miring(/)';
             echo '<script language="javascript">window.history.back();</script>';
         } else {
 
-            if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $nama)){
+            if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $tema)){
                 $_SESSION['nama_rapat'] = 'Form Nama Surat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), minus(-) dan garis miring(/)';
                 echo '<script language="javascript">window.history.back();</script>';
             } else {
@@ -41,7 +53,7 @@ if(empty($_SESSION['admin'])){
                     echo '<script language="javascript">window.history.back();</script>';
                 } else {
 
-                    if(!preg_match("/^[a-zA-Z0-9: ]*$/", $waktu)){
+                    if(!preg_match("/^[a-zA-Z0-9: ]*$/", $mulai) && !preg_match("/^[a-zA-Z0-9: ]*$/", $selesai)){
                         $_SESSION['nama_pimpinan'] = 'Form Waktu Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
                         echo '<script language="javascript">window.history.back();</script>';
                     } else {
@@ -50,66 +62,49 @@ if(empty($_SESSION['admin'])){
                             $_SESSION['nama_pimpinan'] = 'Form Nama Pimpinan Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
                             echo '<script language="javascript">window.history.back();</script>';
                         } else {
+                            $ekstensi = array('jpg','png','jpeg','doc','docx','pdf');
+                            $file = $_FILES['file']['name'];
+                            $x = explode('.', $file);
+                            $eks = strtolower(end($x));
+                            $ukuran = $_FILES['file']['size'];
+                            $target_dir = "upload/rapat/";
 
-                            if(!preg_match("/^[a-zA-Z0-9., -]*$/", $peserta)){
-                                $_SESSION['peserta'] = 'Form Peserta Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,) dan minus (-)';
-                                echo '<script language="javascript">window.history.back();</script>';
-                            } else {
-                                $ekstensi = array('jpg','png','jpeg','doc','docx','pdf');
-                                $file = $_FILES['file']['name'];
-                                $x = explode('.', $file);
-                                $eks = strtolower(end($x));
-                                $ukuran = $_FILES['file']['size'];
-                                $target_dir = "upload/rapat/";
+                            if (! is_dir($target_dir)) {
+                                mkdir($target_dir, 0755, true);
+                            }
 
-                                if (! is_dir($target_dir)) {
-                                    mkdir($target_dir, 0755, true);
-                                }
+                            $query = "INSERT INTO tbl_notulen(notulis, tema, tanggal, mulai, selesai, tempat,nama_pimpinan, peserta, sambutan_inspektur,sambutan_sekretaris,laporan_irban_1, laporan_irban_2,laporan_irban_3,laporan_irban_4,kasubbag_program_keuangan,kasubbag_evaluasi_laporan,kasubbag_umum_kepegawaian,tindak_lanjut,penutup,id_user)
+                            VALUES('$username','$tema','$tanggal','$mulai','$selesai','$tempat','$nama_pimpinan','$peserta', '$sia', '$ssa','$liw1','$liw2','$liw3','$liw4','$kpk','$kep','$kup','$tl','$penutup', '$id_user')";
+                            $query = mysqli_query($config, $query);
+                                
+                            queryChecker($query, $config);
+                            $rapat_id = mysqli_insert_id($config);  
 
-                                $query = mysqli_query($config, "INSERT INTO tbl_rapat(notulis, nama, tanggal, waktu, nama_pimpinan, peserta, isian, id_user)
-                                    VALUES('$notulis','$nama','$tanggal','$waktu','$nama_pimpinan','$peserta', '$isian', '$id_user')");
-                                    
-                                queryChecker($query, $config);
-                                $rapat_id = mysqli_insert_id($config);
+                            //jika form file tidak kosong akan mengeksekusi script dibawah ini
+                            if($file != ""){
+                                $rand = rand(1,10000);
+                                $nfile = $rand."-".$file;
+                                //validasi file
+                                if(in_array($eks, $ekstensi) == true){
+                                    if($ukuran < 2500000){
 
-                                if(!empty($_REQUEST['isianImages'])){
-                                    $isian_images = $_REQUEST['isianImages'];
-                                    $isian_images = json_decode($isian_images);
-                                    for ($i=0; $i < count($isian_images); $i++) { 
-                                        $filename = str_replace($target_dir, "", $isian_images[$i]);
+                                        move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
+
                                         $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
-                                                VALUES('$filename','$target_dir',1,'$rapat_id')");
+                                                VALUES('$nfile','$target_dir',0,'$rapat_id')");
 
                                         queryChecker($query, $config);
-                                    }
-                                }    
-
-                                //jika form file tidak kosong akan mengeksekusi script dibawah ini
-                                if($file != ""){
-                                    $rand = rand(1,10000);
-                                    $nfile = $rand."-".$file;
-                                    //validasi file
-                                    if(in_array($eks, $ekstensi) == true){
-                                        if($ukuran < 2500000){
-
-                                            move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
-
-                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
-                                                    VALUES('$nfile','$target_dir',0,'$rapat_id')");
-
-                                            queryChecker($query, $config);
-                                        } else {
-                                            $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
-                                            echo '<script language="javascript">window.history.back();</script>';
-                                        }
                                     } else {
-                                        $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
+                                        $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
                                         echo '<script language="javascript">window.history.back();</script>';
                                     }
+                                } else {
+                                    $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
+                                    echo '<script language="javascript">window.history.back();</script>';
                                 }
-                                $_SESSION['succAdd'] = 'SUKSES! Data berhasil ditambahkan';
-                                header("Location: ./admin.php?page=tsm");
                             }
+                            $_SESSION['succAdd'] = 'SUKSES! Data berhasil ditambahkan';
+                            header("Location: ./admin.php?page=tsm");
                         }
                     }
                 }

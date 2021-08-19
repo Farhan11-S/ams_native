@@ -21,7 +21,7 @@
         }
 
     	$id = mysqli_real_escape_string($config, $_REQUEST['id']);
-        $query = "SELECT notulis, nama, tanggal, waktu, nama_pimpinan, peserta, isian, CREATED_AT, id_user  FROM tbl_rapat WHERE id='$id'";
+        $query = "SELECT notulis, tema, tanggal, mulai, selesai, tempat, nama_pimpinan, peserta,sambutan_inspektur,sambutan_sekretaris,laporan_irban_1, laporan_irban_2,laporan_irban_3,laporan_irban_4,kasubbag_program_keuangan,kasubbag_evaluasi_laporan,kasubbag_umum_kepegawaian,tindak_lanjut,penutup, CREATED_AT, id_user  FROM tbl_notulen WHERE id='$id'";
     	$query = mysqli_query($config, $query);
 ?>
 <div class="container">
@@ -40,11 +40,8 @@
         <div class="card">
     <?php 
         if($query && mysqli_num_rows($query) > 0) {
-            list($notulis, $nama, $tanggal, $waktu, $nama_pimpinan, $peserta, $isian, $dibuat, $id_user) = mysqli_fetch_array($query);
+            list($notulis, $tema, $tanggal, $mulai, $selesai, $tempat, $nama_pimpinan, $peserta, $sia, $ssa,$liw1,$liw2,$liw3,$liw4,$kpk,$kep,$kup,$tl,$penutup,$dibuat, $id_user) = mysqli_fetch_array($query);
 
-            $query = "SELECT nama  FROM tbl_user WHERE id_user='$id_user'";
-    	    $query = mysqli_query($config, $query);
-            list($pembuat) = mysqli_fetch_array($query);
         ?>
             <div class="card-content table-responsive">
                 <table>
@@ -55,9 +52,9 @@
                             <td><?php echo $notulis; ?></td>
                         </tr>
                         <tr>
-                            <td>Nama Rapat</td>
+                            <td>Tema Rapat</td>
                             <td>:</td>
-                            <td><?php echo $nama; ?></td>
+                            <td><?php echo $tema; ?></td>
                         </tr>
                         <tr>
                             <td>Tanggal Rapat</td>
@@ -67,7 +64,12 @@
                         <tr>
                             <td>Waktu Rapat</td>
                             <td>:</td>
-                            <td><?php echo $waktu; ?></td>
+                            <td><?php echo date('H:i', strtotime($mulai)).'-'.date('H:i', strtotime($selesai)); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Tempat Rapat</td>
+                            <td>:</td>
+                            <td><?php echo $tempat; ?></td>
                         </tr>
                         <tr>
                             <td>Nama Pimpinan</td>
@@ -77,22 +79,72 @@
                         <tr>
                             <td>Peserta</td>
                             <td>:</td>
-                            <td><?php echo $peserta; ?></td>
+                            <td><?php echo nl2br($peserta); ?></td>
                         </tr>
                         <tr>
-                            <td>Isian</td>
+                            <td>Kegiatan Rapat</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Sambutan Inspektur dan Arahan</td>
                             <td>:</td>
-                            <td><?php echo $isian; ?></td>
+                            <td><?php echo nl2br($sia); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Sambutan Sekretaris dan Arahan</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($ssa); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Irban Wilayah I</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($liw1); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Irban Wilayah II</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($liw2); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Irban Wilayah III</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($liw3); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Irban Wilayah IV</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($liw4); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Kasubbag Program & Keuangan</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($kpk); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Kasubbag Evaluasi dan Pelaporan</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($kep); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Kasubbag Umum dan Kepegawaian</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($kup); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Tindak Lanjut</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($tl); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Penutup</td>
+                            <td>:</td>
+                            <td><?php echo nl2br($penutup); ?></td>
                         </tr>
                         <tr>
                             <td>Ditambahkan pada</td>
                             <td>:</td>
                             <td><?php echo indoDate($dibuat); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Ditambahkan oleh</td>
-                            <td>:</td>
-                            <td><?php echo $pembuat; ?></td>
                         </tr>
                         <tr>
                             <td>Lampiran file</td>

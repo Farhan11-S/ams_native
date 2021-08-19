@@ -27,7 +27,9 @@
                     $home = true;
                     break;
             }
-        } else {?>
+        } else {
+            $admin = $_SESSION['admin'] != 3
+            ?>
             <!-- Row Start -->
             <div class="row">
                 <!-- Secondary Nav START -->
@@ -38,9 +40,11 @@
                                 <div class="col m7">
                                     <ul class="left">
                                         <li class="waves-effect waves-light hide-on-small-only"><a href="?page=tsm" class="judul"><i class="material-icons" style="margin: 0 5px 6px 0;">mail</i>Notulen</a></li>
+                                        <?php if ($admin) {?>
                                         <li class="waves-effect waves-light">
                                             <a href="?page=tsm&act=add"><i class="material-icons md-24">add_circle</i> Tambah Data</a>
                                         </li>
+                                        <?php } ?>
                                     </ul>
                                 </div>
                             </div>
@@ -97,30 +101,31 @@
                         <thead>
                             <tr>
                                 <th width="5%">ID</th>
-                                <th width="10%">Notulis</th>
-                                <th width="25%">Nama Rapat</th>
-                                <th width="24%">Pimpinan Rapat</th>
+                                <th width="25%">Tema Rapat</th>
                                 <th width="18%">Tanggal Rapat</th>
+                                <th width="24%">Pimpinan Rapat</th>
+                                <th width="10%">Notulis</th>
                                 <th width="18%">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                $query = mysqli_query($config, "SELECT * FROM tbl_rapat");
+                                $query = mysqli_query($config, "SELECT * FROM tbl_notulen");
                                 if(mysqli_num_rows($query) > 0){
                                     while($row = mysqli_fetch_array($query)){
                                         echo "<tr>";
                                         echo '<td>'. $row['id'] .'</td>';
-                                        echo '<td>'. $row['notulis'] .'</td>';
-                                        echo '<td>'. $row['nama'] .'</td>';
-                                        echo '<td>'. $row['nama_pimpinan'] .'</td>';
+                                        echo '<td>'. $row['tema'] .'</td>';
                                         echo '<td>'. $row['tanggal'] .'</td>';
+                                        echo '<td>'. $row['nama_pimpinan'] .'</td>';
+                                        echo '<td>'. $row['notulis'] .'</td>';
                                         echo '<td class="mdc-data-table__cell row">
                                         <a class="btn green waves-effect waves-light col m5 s12" style="margin-right:5px;" title="Lihat detail" href="?page=tsm&amp;act=show&amp;id='. $row['id'] .'"><i class="material-icons">list</i></a>';
-                        
-                                        echo '<a class="btn blue waves-effect waves-light col m5 s12" title="Edit" href="?page=tsm&amp;act=edit&amp;id='. $row['id'] .'"><i class="material-icons">edit</i></a>';
-                        
-                                        echo '<a class="btn deep-orange waves-effect waves-light col m5 s12" style="margin-right:5px;" title="Hapus" href="?page=tsm&amp;act=del&amp;id='. $row['id'] .'"><i class="material-icons">delete</i></a>';
+                                        if (($_SESSION['admin'] == 1 || $_SESSION['nama'] == $row['notulis']) && $admin) {
+                                            echo '<a class="btn blue waves-effect waves-light col m5 s12" title="Edit" href="?page=tsm&amp;act=edit&amp;id='. $row['id'] .'"><i class="material-icons">edit</i></a>';
+                                            echo '<a class="btn deep-orange waves-effect waves-light col m5 s12" style="margin-right:5px;" title="Hapus" href="?page=tsm&amp;act=del&amp;id='. $row['id'] .'"><i class="material-icons">delete</i></a>';
+                                        }
+
                         
                                         echo '<a class="btn indigo lighten-1 waves-effect waves-light col m5 s12" title="Cetak" href="?page=tsm&amp;act=print&amp;id='. $row['id'] .'" target="_blank" rel="noopener"><i class="material-icons">print</i></a></td>';
                                         echo "</tr>";

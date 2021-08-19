@@ -7,32 +7,48 @@ if(empty($_SESSION['admin'])){
     header("Location: ./");
     die();
 } else {
+    if (($_SESSION['admin'] == 3 || $_SESSION['user_id'] != $_SESSION['id_user'])&& $_SESSION['admin'] != 1) {
+        header("Location: ./");
+        die();
+    }
     require_once 'include/config.php';
     require_once 'include/functions.php';
     $config = conn($host, $username, $password, $database);
     //validasi form kosong
-    if($_REQUEST['notulis'] == "" || $_REQUEST['nama'] == "" || $_REQUEST['tanggal'] == ""
-    || $_REQUEST['waktu'] == "" || $_REQUEST['nama_pimpinan'] == "" || $_REQUEST['peserta'] == "" || $_REQUEST['id'] == "" || $_REQUEST['id'] == ""){
+    if($_REQUEST['tema'] == "" || $_REQUEST['tanggal'] == "" || $_REQUEST['mulai'] == "" || $_REQUEST['selesai'] == ""
+    || $_REQUEST['tempat'] == "" || $_REQUEST['nama_pimpinan'] == "" || $_REQUEST['peserta'] == "" || $_REQUEST['id'] == ""){
         $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
         echo '<script language="javascript">window.history.back();</script>';
     } else {
-        $id = $_REQUEST['id'];
-        $notulis = $_REQUEST['notulis'];
-        $nama = $_REQUEST['nama'];
+        $tema = $_REQUEST['tema'];
         $tanggal = $_REQUEST['tanggal'];
-        $waktu = $_REQUEST['waktu'];
+        $mulai = $_REQUEST['mulai'];
+        $selesai = $_REQUEST['selesai'];
+        $tempat = $_REQUEST['tempat'];
         $nama_pimpinan = $_REQUEST['nama_pimpinan'];
         $peserta = $_REQUEST['peserta'];
-        $isian = $_REQUEST['isian'];
+        $sia = $_REQUEST['sia'];
+        $ssa = $_REQUEST['ssa'];
+        $liw1 = $_REQUEST['liw1'];
+        $liw2 = $_REQUEST['liw2'];
+        $liw3 = $_REQUEST['liw3'];
+        $liw4 = $_REQUEST['liw4'];
+        $kpk = $_REQUEST['kpk'];
+        $kep = $_REQUEST['kep'];
+        $kup = $_REQUEST['kup'];
+        $tl = $_REQUEST['tl'];
+        $penutup = $_REQUEST['penutup'];
+        $username = $_SESSION['nama'];
         $id_user = $_SESSION['id_user'];
+        $id = $_REQUEST['id'];
 
         //validasi input data
-        if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $notulis)){
+        if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $tempat)){
             $_SESSION['notulis'] = 'Form Notulis hanya boleh mengandung karakter huruf, angka, spasi, titik(.), minus(-) dan garis miring(/)';
             echo '<script language="javascript">window.history.back();</script>';
         } else {
 
-            if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $nama)){
+            if(!preg_match("/^[a-zA-Z0-9.\/ -]*$/", $tema)){
                 $_SESSION['nama_rapat'] = 'Form Nama Surat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), minus(-) dan garis miring(/)';
                 echo '<script language="javascript">window.history.back();</script>';
             } else {
@@ -42,7 +58,7 @@ if(empty($_SESSION['admin'])){
                     echo '<script language="javascript">window.history.back();</script>';
                 } else {
 
-                    if(!preg_match("/^[a-zA-Z0-9: ]*$/", $waktu)){
+                    if(!preg_match("/^[a-zA-Z0-9: ]*$/", $mulai) && !preg_match("/^[a-zA-Z0-9: ]*$/", $selesai)){
                         $_SESSION['nama_pimpinan'] = 'Form Waktu Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
                         echo '<script language="javascript">window.history.back();</script>';
                     } else {
@@ -51,86 +67,54 @@ if(empty($_SESSION['admin'])){
                             $_SESSION['nama_pimpinan'] = 'Form Nama Pimpinan Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
                             echo '<script language="javascript">window.history.back();</script>';
                         } else {
+                            $ekstensi = array('jpg','png','jpeg','doc','docx','pdf');
+                            $file = $_FILES['file']['name'];
+                            $x = explode('.', $file);
+                            $eks = strtolower(end($x));
+                            $ukuran = $_FILES['file']['size'];
+                            $target_dir = "upload/rapat/";
 
-                            if(!preg_match("/^[a-zA-Z0-9., -]*$/", $peserta)){
-                                $_SESSION['peserta'] = 'Form Peserta Rapat hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,) dan minus (-)';
-                                echo '<script language="javascript">window.history.back();</script>';
-                            } else {
-                                $ekstensi = array('jpg','png','jpeg','doc','docx','pdf');
-                                $file = $_FILES['file']['name'];
-                                $x = explode('.', $file);
-                                $eks = strtolower(end($x));
-                                $ukuran = $_FILES['file']['size'];
-                                $target_dir = "upload/rapat/";
+                            if (! is_dir($target_dir)) {
+                                mkdir($target_dir, 0755, true);
+                            }
 
-                                if (! is_dir($target_dir)) {
-                                    mkdir($target_dir, 0755, true);
-                                }
-
-                                $query = mysqli_query($config, "UPDATE tbl_rapat SET notulis = '$notulis', nama = '$nama', tanggal = '$tanggal', waktu = '$waktu', nama_pimpinan = '$nama_pimpinan', peserta = '$peserta', isian = '$isian', id_user = '$id_user' WHERE id='$id'");
+                            $query = "UPDATE tbl_notulen SET notulis='$username', tema='$tema', tanggal='$tanggal', mulai='$mulai', selesai='$selesai', tempat='$tempat',nama_pimpinan='$nama_pimpinan', 
+                            peserta='$peserta', sambutan_inspektur='$sia',sambutan_sekretaris='$ssa',laporan_irban_1='$liw1', laporan_irban_2='$liw2',laporan_irban_3='$liw3',laporan_irban_4='$liw4',
+                            kasubbag_program_keuangan='$kpk',kasubbag_evaluasi_laporan='$kep',kasubbag_umum_kepegawaian='$kup',tindak_lanjut='$tl',penutup='$penutup',id_user='$id_user' WHERE id='$id'";
+                            $query = mysqli_query($config, $query);
                                 
-                                queryChecker($query, $config);
+                            queryChecker($query, $config);
+                            $rapat_id = mysqli_insert_id($config);  
 
-                                if(!empty($_REQUEST['isianImages'])){
-                                    $query = mysqli_query($config, "SELECT * FROM tbl_files WHERE rapat_id = '$id' AND isian = 1");
-                                    queryChecker($query, $config);
-                                    $images_in_db = [];
-                                    $images_in_isian_from_db = [];
-                                    while ($row = mysqli_fetch_array($query)) {
-                                        $fullpath = $row['path'].$row['filename'];
-                                        array_push($images_in_db, $fullpath);
-                                    }
-                                    $isian_images = $_REQUEST['isianImages'];
-                                    $isian_images = json_decode($isian_images);
-                                    for ($i=0; $i < count($isian_images); $i++) { 
-                                        if(!in_array($isian_images[$i], $images_in_db)){                    
-                                            $filename = str_replace($target_dir, "", $isian_images[$i]);
-                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path,isian,rapat_id)
-                                                    VALUES('$filename','$target_dir',1,'$id')");
+                            //jika form file tidak kosong akan mengeksekusi script dibawah ini
+                            if($file != ""){
+                                $rand = rand(1,10000);
+                                $nfile = $rand."-".$file;
+                                //validasi file
+                                if(in_array($eks, $ekstensi) == true){
+                                    if($ukuran < 2500000){
 
-                                            queryChecker($query, $config);
-                                        } else{
-                                            array_push($images_in_isian_from_db, $isian_images[$i]);
-                                        }
-                                    }
-                                    $images_deleted = array_diff($images_in_db, $images_in_isian_from_db);
-                                    for ($i=0; $i < count($images_deleted); $i++) { 
-                                        $filename = str_replace($target_dir, "", $images_deleted[$i]);
-                                        $query = mysqli_query($config, "DELETE FROM tbl_files WHERE rapat_id='$id' AND isian=1 AND filename='$filename'");
+                                        $query = mysqli_query($config, "DELETE FROM tbl_files WHERE rapat_id='$id' AND isian=0");
+
                                         queryChecker($query, $config);
-                                    }
-                                }    
 
-                                //jika form file tidak kosong akan mengeksekusi script dibawah ini
-                                if($file != ""){
-                                    $rand = rand(1,10000);
-                                    $nfile = $rand."-".$file;
-                                    //validasi file
-                                    if(in_array($eks, $ekstensi) == true){
-                                        if($ukuran < 2500000){
+                                        move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
 
-                                            $query = mysqli_query($config, "DELETE FROM tbl_files WHERE rapat_id='$id' AND isian=0");
-
-                                            queryChecker($query, $config);
-
-                                            move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
-
-                                            $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path, isian, rapat_id)
+                                        $query = mysqli_query($config, "INSERT INTO tbl_files(filename,path, isian, rapat_id)
                                                     VALUES('$nfile','$target_dir', 0, '$id')");
 
-                                            queryChecker($query, $config);
-                                        } else {
-                                            $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
-                                            echo '<script language="javascript">window.history.back();</script>';
-                                        }
+                                        queryChecker($query, $config);
                                     } else {
-                                        $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
+                                        $_SESSION['errSize'] = 'Ukuran file yang diupload terlalu besar!';
                                         echo '<script language="javascript">window.history.back();</script>';
                                     }
+                                } else {
+                                    $_SESSION['errFormat'] = 'Format file yang diperbolehkan hanya *.JPG, *.PNG, *.DOC, *.DOCX atau *.PDF!';
+                                    echo '<script language="javascript">window.history.back();</script>';
                                 }
-                                $_SESSION['succAdd'] = 'SUKSES! Data berhasil diedit';
-                                header("Location: ./admin.php?page=tsm");
                             }
+                            $_SESSION['succAdd'] = 'SUKSES! Data berhasil diedit';
+                            header("Location: ./admin.php?page=tsm");
                         }
                     }
                 }

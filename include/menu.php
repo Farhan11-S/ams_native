@@ -5,7 +5,7 @@
 
 <nav class="blue-grey darken-1">
     <div class="nav-wrapper">
-        <a href="./" class="brand-logo center hide-on-large-only"> AMS</a>
+        <a href="./" class="brand-logo center hide-on-large-only"><img class="logoside" src="upload/234036693_206258044784916_3376650780198122801_n.jpg" alt="AMS" style="margin-top:20px; height:50px !important; width:50px !important;"></a>
         <ul id="slide-out" class="side-nav" data-simplebar-direction="vertical">
             <li class="no-padding">
                 <div class="logo-side center blue-grey darken-3">
@@ -47,21 +47,16 @@
             </li>
             <li><a href="./"><i class="material-icons middle">dashboard</i> Beranda</a></li>
             <li class="no-padding">
-                <?php
-                    if($_SESSION['admin'] == 1 || $_SESSION['admin'] == 3){ ?>
                 <ul class="collapsible collapsible-accordion">
                     <li>
                         <a class="collapsible-header" href="?page=tsm"><i class="material-icons">mail</i>Notulen</a>
                    </li>
                 </ul>
-                <?php
-                    }
-                ?>
             </li>
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li>
-                        <a class="collapsible-header" a href="?page=gsm"><i class="material-icons">image</i> Galeri File</a>
+                        <a class="collapsible-header" a href="?page=gsm"><i class="material-icons">image</i> Arsip File</a>
                 </ul>
             </li>
             <li class="no-padding">
@@ -105,11 +100,11 @@
 
         <!-- Menu on large screen START -->
         <ul class="center hide-on-med-and-down" id="nv">
-            <li><a href="./" class="ams hide-on-med-and-down"> AMS</a></li>
+            <li><a href="./" class="ams hide-on-med-and-down"> <img class="logoside" src="upload/234036693_206258044784916_3376650780198122801_n.jpg" alt="AMS" style="margin-top:10px; height:50px !important; width:50px !important;"></a></li>
             <li><div class="grs"></></li>
             <li><a href="./"><i class="material-icons"></i>&nbsp; Beranda</a></li>
             <li><a href="?page=tsm">Notulen</a></li>
-            <li><a href="?page=gsm">Galeri File</a></li>
+            <li><a href="?page=gsm">Arsip File</a></li>
             <?php
                 if($_SESSION['admin'] == 1){ ?>
             <li><a class="dropdown-button" href="#!" data-activates="pengaturan">Pengaturan <i class="material-icons md-18">arrow_drop_down</i></a></li>

@@ -263,8 +263,8 @@
                 text-align: center;
                 color: #212121;
             }
-            th, td{
-                border: 1px solid #444 !important;
+            th, td, tr{
+                border: none !important;
             }
             th{
                 padding: 5px;
@@ -300,6 +300,9 @@
                 width: 100%;
                 overflow-x: auto !important;
             }
+        }
+        th, td, tr{
+            border: none !important;
         }
     </style>
     <!-- Global style END -->

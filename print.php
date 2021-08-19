@@ -179,46 +179,96 @@
                 <div class="separator"></div>';
 
                 $id = mysqli_real_escape_string($config, $_REQUEST['id']);
-                $query = mysqli_query($config, "SELECT * FROM tbl_rapat WHERE id='$id'");
+                $query = mysqli_query($config, "SELECT * FROM tbl_notulen WHERE id='$id'");
 
                 if(mysqli_num_rows($query) > 0){
                     while($row = mysqli_fetch_array($query)){
-                    echo '<table class="bordered" id="tbl">
+                    echo '<table style="border-style: hidden;" id="tbl">
                     <tbody>';
                     echo '
                             <tr>
-                                <td class="tgh" id="lbr" colspan="5">LEMBAR NOTULEN</td>
+                                <td class="tgh" id="lbr" colspan="5">NOTULEN</td>
                             </tr>
                             <tr>
-                                <td id="right" width="18%"><strong>Rapat</strong></td>
-                                <td id="left" style="border-right: none;" width="57%">: '.$row['nama'].'</td>
-                                <td id="left" width="25"><strong>Notulis</strong> : '.$row['notulis'].'</td>
+                                <td id="right" width="25%"><strong>Tema Rapat</strong></td>
+                                <td id="left" style="border-right: none;" width="40%">: '.$row['tema'].'</td>
                             </tr>
-                            <tr><td id="right"><strong>Tanggal Rapat</strong></td>
+                            <tr><td id="right"><strong>Tanggal</strong></td>
                                 <td id="left" colspan="2">: '.indoDate($row['tanggal']).'</td>
                             </tr>
                             <tr>
-                                <td id="right"><strong>Waktu Rapat</strong></td>
-                                <td id="left" colspan="2">: '.date('H:i', strtotime($row['waktu'])).'</td>
+                                <td id="right"><strong>Waktu</strong></td>
+                                <td id="left" colspan="2">: '.date('H:i', strtotime($row['mulai'])).' - '.date('H:i', strtotime($row['mulai'])).'</td>
                             </tr>
                             <tr>
                                 <td id="right"><strong>Nama Pimpinan</strong></td>
                                 <td id="left" colspan="2">: '.$row['nama_pimpinan'].'</td>
                             </tr>
                             <tr>
+                                <td id="right"><strong>Notulis</strong></td>
+                                <td id="left" colspan="2">: '.$row['notulis'].'</td>
+                            </tr>
+                            <tr>
                                 <td id="right"><strong>Peserta</strong></td>
-                                <td id="left" colspan="2">: '.$row['peserta'].'</td>
+                                <td id="left" colspan="2">: '.nl2br($row['peserta']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong>Kegiatan Rapat</strong></td>
+                                <td id="left" colspan="2">: </td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:20px;">1.Sambutan Inspektur dan Arahan</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['sambutan_inspektur']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:20px;">2. Sambutan Sekretaris dan Arahan</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['sambutan_sekretaris']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:20px;">3. Diskusi</strong></td>
+                                <td id="left" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">a. Laporan Irban Wilayah I</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['laporan_irban_1']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">b. Laporan Irban Wilayah II</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['laporan_irban_2']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">c. Laporan Irban Wilayah III</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['laporan_irban_3']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">d. Laporan Irban Wilayah IV</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['laporan_irban_4']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">e. Kasubbag Program & Keuangan</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['kasubbag_program_keuangan']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">f. Kasubbag Evaluasi dan Pelaporan</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['kasubbag_evaluasi_laporan']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">g. Kasubbag Umum dan Kepegawaian</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['kasubbag_umum_kepegawaian']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:30px;">h. Tindak Lanjut</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['tindak_lanjut']).'</td>
+                            </tr>
+                            <tr>
+                                <td id="right"><strong style="margin-left:20px;">4.Penutup</strong></td>
+                                <td id="left" colspan="2">: '.nl2br($row['penutup']).'</td>
                             </tr>
                             <tr>
                                 <td id="right"><strong>Dibuat Tanggal</strong></td>
                                 <td id="left" style="border-right: none;" colspan="2">: '.indoDate($row['CREATED_AT']).'</td>
                             </tr>
                             <tr>';
-                            echo '
-                                <tr class="isi">
-                                    <td id="right"><strong>Isian</strong></td>
-                                    <td id="left" style="border-right: none;" colspan="2">: '.$row['isian'].' </td>
-                                </tr>';
                             echo '</tbody>
                             </table>
                             <div id="lead">

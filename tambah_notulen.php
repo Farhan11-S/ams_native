@@ -1,6 +1,6 @@
 <?php
     //cek session
-    if(empty($_SESSION['admin'])){
+    if(empty($_SESSION['admin']) || $_SESSION['admin'] == 3){
         $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
         header("Location: ./");
         die();
@@ -60,28 +60,16 @@
                     <!-- Row in form START -->
                     <div class="row">
                         <div class="input-field col s12 m6">
-                            <i class="material-icons prefix md-prefix">looks_one</i>
-                            <input id="notulis" type="text" class="validate" name="notulis" required>
-                                <?php
-                                    if(isset($_SESSION['notulis'])){
-                                        $notulis = $_SESSION['notulis'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$notulis.'</div>';
-                                        unset($_SESSION['notulis']);
-                                    }
-                                ?>
-                            <label for="notulis">Notulis</label>
-                        </div>
-                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">bookmark</i>
-                            <input id="nama" type="text" class="validate" name="nama" required>
+                            <input id="tema" type="text" class="validate" name="tema" required>
                                 <?php
-                                    if(isset($_SESSION['nama_rapat'])){
-                                        $nama = $_SESSION['nama_rapat'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$nama.'</div>';
-                                        unset($_SESSION['nama_rapat']);
+                                    if(isset($_SESSION['tema_rapat'])){
+                                        $tema = $_SESSION['tema_rapat'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$tema.'</div>';
+                                        unset($_SESSION['tema_rapat']);
                                     }
                                 ?>
-                            <label for="nama">Nama Rapat</label>
+                            <label for="tema">Tema Rapat</label>
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
@@ -108,6 +96,18 @@
                             <label for="tanggal">Tanggal Rapat</label>
                         </div>
                         <div class="input-field col s12 m6">
+                            <i class="material-icons prefix md-prefix">place</i>
+                            <input id="tempat" type="text" class="validate" name="tempat" required>
+                                <?php
+                                    if(isset($_SESSION['tempat'])){
+                                        $tema = $_SESSION['tempat'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$tempat.'</div>';
+                                        unset($_SESSION['tempat']);
+                                    }
+                                ?>
+                            <label for="tempat">Tempat Rapat</label>
+                        </div>
+                        <div class="input-field col s12 m12">
                             <i class="material-icons prefix md-prefix">assignment_ind</i>
                             <textarea id="peserta" class="materialize-textarea validate" name="peserta" required></textarea>
                                 <?php
@@ -119,23 +119,163 @@
                                 ?>
                             <label for="peserta">Peserta Rapat</label>
                         </div>
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix md-prefix">date_range</i>
-                            <input id="waktu" type="time" name="waktu" class="timepicker" required>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="sia" class="materialize-textarea validate" name="sia"></textarea>
                                 <?php
-                                    if(isset($_SESSION['waktu'])){
-                                        $waktu = $_SESSION['waktu'];
-                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$waktu.'</div>';
-                                        unset($_SESSION['waktu']);
+                                    if(isset($_SESSION['sia'])){
+                                        $sia = $_SESSION['sia'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$sia.'</div>';
+                                        unset($_SESSION['sia']);
                                     }
                                 ?>
-                            <label style="margin-top: 20px;" for="waktu">Waktu Rapat</label>
+                            <label for="sia">Sambutan Inspektur dan Arahan</label>
                         </div>
-                        <div class="input-field col s12" style="margin-top: 50px !important;">
-                            <i class="material-icons prefix md-prefix">looks_two</i>
-                            <textarea id="isian" name="isian" placeholder="Isian Rapat" required></textarea>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="ssa" class="materialize-textarea validate" name="ssa"></textarea>
+                                <?php
+                                    if(isset($_SESSION['ssa'])){
+                                        $ssa = $_SESSION['ssa'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$ssa.'</div>';
+                                        unset($_SESSION['ssa']);
+                                    }
+                                ?>
+                            <label for="ssa">Sambutan Sekretaris dan Arahan</label>
                         </div>
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="liw1" class="materialize-textarea validate" name="liw1"></textarea>
+                                <?php
+                                    if(isset($_SESSION['liw1'])){
+                                        $liw1 = $_SESSION['liw1'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$liw1.'</div>';
+                                        unset($_SESSION['liw1']);
+                                    }
+                                ?>
+                            <label for="liw1">Laporan Irban Wilayah I</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="liw2" class="materialize-textarea validate" name="liw2"></textarea>
+                                <?php
+                                    if(isset($_SESSION['liw2'])){
+                                        $liw2 = $_SESSION['liw2'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$liw2.'</div>';
+                                        unset($_SESSION['liw2']);
+                                    }
+                                ?>
+                            <label for="liw2">Laporan Irban Wilayah II</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="liw3" class="materialize-textarea validate" name="liw3"></textarea>
+                                <?php
+                                    if(isset($_SESSION['liw3'])){
+                                        $liw3 = $_SESSION['liw3'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$liw3.'</div>';
+                                        unset($_SESSION['liw3']);
+                                    }
+                                ?>
+                            <label for="liw3">Laporan Irban Wilayah III</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="liw4" class="materialize-textarea validate" name="liw4"></textarea>
+                                <?php
+                                    if(isset($_SESSION['liw4'])){
+                                        $liw4 = $_SESSION['liw4'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$liw4.'</div>';
+                                        unset($_SESSION['liw4']);
+                                    }
+                                ?>
+                            <label for="liw4">Laporan Irban Wilayah IV</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="kpk" class="materialize-textarea validate" name="kpk"></textarea>
+                                <?php
+                                    if(isset($_SESSION['kpk'])){
+                                        $kpk = $_SESSION['kpk'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$kpk.'</div>';
+                                        unset($_SESSION['kpk']);
+                                    }
+                                ?>
+                            <label for="kpk">Kasubbag Program & Keuangan</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="kep" class="materialize-textarea validate" name="kep"></textarea>
+                                <?php
+                                    if(isset($_SESSION['kep'])){
+                                        $kep = $_SESSION['kep'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$kep.'</div>';
+                                        unset($_SESSION['kep']);
+                                    }
+                                ?>
+                            <label for="kep">Kasubbag Evaluasi dan Pelaporan</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="kup" class="materialize-textarea validate" name="kup"></textarea>
+                                <?php
+                                    if(isset($_SESSION['kup'])){
+                                        $kup = $_SESSION['kup'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$kup.'</div>';
+                                        unset($_SESSION['kup']);
+                                    }
+                                ?>
+                            <label for="kup">Kasubbag Umum dan Kepegawaian</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="tl" class="materialize-textarea validate" name="tl"></textarea>
+                                <?php
+                                    if(isset($_SESSION['tl'])){
+                                        $tl = $_SESSION['tl'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$tl.'</div>';
+                                        unset($_SESSION['tl']);
+                                    }
+                                ?>
+                            <label for="tl">Tindak lanjut</label>
+                        </div>
+                        <div class="input-field col s12 m12">
+                            <i class="material-icons prefix md-prefix">info_outline</i>
+                            <textarea id="penutup" class="materialize-textarea validate" name="penutup"></textarea>
+                                <?php
+                                    if(isset($_SESSION['penutup'])){
+                                        $penutup = $_SESSION['penutup'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$penutup.'</div>';
+                                        unset($_SESSION['penutup']);
+                                    }
+                                ?>
+                            <label for="penutup">Penutup</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix md-prefix">alarm</i>
+                            <input id="mulai" type="time" name="mulai" class="timepicker" required>
+                                <?php
+                                    if(isset($_SESSION['mulai'])){
+                                        $mulai = $_SESSION['mulai'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$mulai.'</div>';
+                                        unset($_SESSION['mulai']);
+                                    }
+                                ?>
+                            <label style="margin-top: 20px;" for="mulai">Waktu Mulai Rapat</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix md-prefix">alarm</i>
+                            <input id="selesai" type="time" name="selesai" class="timepicker" required>
+                                <?php
+                                    if(isset($_SESSION['selesai'])){
+                                        $selesai = $_SESSION['selesai'];
+                                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$selesai.'</div>';
+                                        unset($_SESSION['selesai']);
+                                    }
+                                ?>
+                            <label style="margin-top: 20px;" for="selesai">Waktu Selesai Rapat</label>
+                        </div>
+                        <div style="margin-top: 3rem !important;" class="input-field col s12">
                             <div class="file-field input-field">
                                 <div class="btn light-green darken-1">
                                     <span>File</span>
@@ -175,57 +315,11 @@
                 <!-- Form END -->
             </div>
             <!-- Row form END -->
-            <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
             <script>
                 function submitForm() {
                     const form = document.getElementById("main-form");
-                    const isian = tinyMCE.activeEditor.getContent();
-                    const parser = new DOMParser();
-                    const htmlDoc = parser.parseFromString(isian, "text/html");
-                    const isianImages = htmlDoc.getElementsByTagName("img");
-                    const imgSrcs = [];
-
-                    for (let i = 0; i < isianImages.length; i++) {
-                        imgSrcs.push(isianImages[i].getAttribute("src"));
-                    }
-                    const hiddenField = document.createElement("input");
-                    hiddenField.type = "hidden";
-                    hiddenField.name = "isianImages";
-                    hiddenField.value = JSON.stringify(imgSrcs);
-                    form.appendChild(hiddenField);
                     form.submit()
                 }
-                var files = 
-                tinymce.init({
-                    selector: '#isian',
-                    plugins: 'image',
-                    height : '480px',
-                    images_reuse_filename :false,
-                    images_upload_handler: function (blobInfo, success, failure) {
-                        var xhr, formData;
-                        xhr = new XMLHttpRequest();
-                        xhr.withCredentials = false;
-                        xhr.open('POST', 'postAcceptor.php');
-                        xhr.onload = function() {
-                            var json;
-
-                            if (xhr.status != 200) {
-                                failure('HTTP Error: ' + xhr.status);
-                                return;
-                            }
-                            json = JSON.parse(xhr.responseText);
-
-                            if (!json || typeof json.location != 'string') {
-                                failure('Invalid JSON: ' + xhr.responseText);
-                                return;
-                            }
-                            success(json.location);
-                        };
-                        formData = new FormData();
-                        formData.append('file', blobInfo.blob(), blobInfo.filename());
-                        xhr.send(formData);
-                    },
-                });
             </script>
 <?php
     }

@@ -103,7 +103,7 @@ Website     : https://masrud.com
 
             <?php
                 //menghitung jumlah surat masuk
-                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_rapat"));
+                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_notulen"));
                 $count2 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_files"));
 
                 //menghitung jumlah pengguna
@@ -116,7 +116,7 @@ Website     : https://masrud.com
                     <div class="card cyan">
                         <div class="card-content">
                             <span class="card-title white-text"><i class="material-icons md-36">mail</i> Jumlah Notulen</span>
-                            <?php echo '<h5 class="white-text link">'.$count1.' Surat Masuk</h5>'; ?>
+                            <?php echo '<h5 class="white-text link">'.$count1.' Notulen</h5>'; ?>
                         </div>
                     </div>
                 </div>
@@ -127,7 +127,7 @@ Website     : https://masrud.com
                     <div class="card blue darken-3">
                         <div class="card-content">
                             <span class="card-title white-text"><i class="material-icons md-36">attach_file</i> Jumlah Files</span>
-                            <?php echo '<h5 class="white-text link">'.$count2.' Surat Masuk</h5>'; ?>
+                            <?php echo '<h5 class="white-text link">'.$count2.' Lampiran</h5>'; ?>
                         </div>
                     </div>
                 </div>

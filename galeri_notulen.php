@@ -34,10 +34,10 @@
                 header("Location: ./admin.php?page=gsm");
                 die();
             } else {
-                $query = "SELECT tbl_files.id, rapat_id, filename, path, tanggal FROM tbl_files JOIN tbl_rapat ON rapat_id = tbl_rapat.id WHERE tanggal BETWEEN '$dari_tanggal' AND '$sampai_tanggal' ORDER By tbl_rapat.id";
+                $query = "SELECT tbl_files.id, rapat_id, filename, path, tanggal FROM tbl_files JOIN tbl_notulen ON rapat_id = tbl_notulen.id WHERE tanggal BETWEEN '$dari_tanggal' AND '$sampai_tanggal' ORDER By tbl_rapat.id";
             }
         } else {
-            $query = "SELECT tbl_files.id, rapat_id, filename, path, tanggal FROM tbl_files JOIN tbl_rapat ON rapat_id = tbl_rapat.id";
+            $query = "SELECT tbl_files.id, rapat_id, filename, path, tanggal FROM tbl_files JOIN tbl_notulen ON rapat_id = tbl_notulen.id";
         }
     }
 ?>
